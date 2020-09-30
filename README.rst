@@ -330,6 +330,6 @@ BIP39 Validator is provided under the MIT license that can be found in the LICEN
 file. By using, distributing, or contributing to this project, you agree to the
 terms and conditions of this license.
 
-.. _LICENSE: https://github.com/ZenulAbidin/bip39validator/blob/master/LICENSE.txt
+.. _LICENSE: https://github.com/ZenulAbidin/bip39validator/blob/master/LICENSE
 
 .. end_license
