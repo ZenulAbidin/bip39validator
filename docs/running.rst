@@ -6,13 +6,13 @@ Running
    :end-before:  end_running
 
 Description of validation tests
-========================================================================================
+-----------------------------------------------------------------------------------------
 
 Currently, four validation tests are implemented. Each of these will be explained in
 detail below.
 
 Lowercase words test
------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This test ensures that all words in the wordlist are composed of lowercase latin words,
 with no diacritics, and that there is strictly one word on each line, with no intermediate
@@ -34,7 +34,7 @@ languages' wordlists. Support for non-Latin languages might be added in the futu
 currently it is not a priority.
 
 Levenshtein distance test
------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This validation checks that every pair of words in the wordlist has a Levenshtein distance
 above a threshold. [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
@@ -52,7 +52,7 @@ distance between these two words is 2. But the distance between "cat" and "oatme
 
 - Replace "c" with "o"
 - Add "m" "e" "a" "l" at the end
-
+33
 Here's a slightly more complex example. To transform "research" into "searching", you need
 to:
 
@@ -63,7 +63,7 @@ So, the Levenshtein distance between these words is 5.
 
 
 Initial unique characters test
------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This validation checks that the prefixes of all words in the wordlist are unique up to a
 threshold number of characters. In other words, it checks that the word can be uniquely
@@ -78,7 +78,6 @@ initial characters two words have, the less effective the autocomplete becomes.
 For example, the wordlist
 
 ::
-
    tree
    inkling
    train
@@ -90,7 +89,7 @@ can uniquely identify it in each wordlist.
 
 
 Maximum length test
------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This validation checks that the string length all words are no longer than a threshold
 number of characters. As some hardware wallets only display the first eight characters
