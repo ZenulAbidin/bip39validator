@@ -6,7 +6,7 @@ API
    :end-before:  end_using_api
 
 Classes
-========================================================================================
+-----------------------------------------------------------------------------------------
 
 The most basic class of the BIP39 Validator API is ``BIP39WordList``. This class is
 responsible for loading the wordlist from an input sorce, such as the local disk or
@@ -34,3 +34,34 @@ result object can be explored whethe the test succeeded or failed.
 Except for ``test_lowercase()`` itself, all tests run ``test_lowercase()`` before
 running their own tests to ensure that the wordlist is well-formed.
 
+API Reference
+-----------------------------------------------------------------------------------------
+
+.. module:: bip39validator
+
+.. autoclass:: bip39validator.BIP39WordList
+   :inherited-members:
+
+.. autoclass:: bip39validator.ValidWordList
+   :inherited-members:
+
+.. autoclass:: bip39validator.LevDistResult
+   :inherited-members:
+
+.. autoclass:: bip39validator.InitUniqResult
+   :inherited-members:
+
+.. autoclass:: bip39validator.MaxLengthResult
+   :inherited-members:
+
+Exceptions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. autoexception:: bip39validator.InvalidWordList
+   :inherited-members:
+
+.. autoexception:: bip39validator.InvalidRemoteContent
+   :inherited-members:
+
+.. autoexception:: bip39validator.ValidationFailed
+   :inherited-members:

@@ -1,6 +1,6 @@
 # BIP39 Wordlist Validator - A tool to validate BIP39 wordlists in Latin
 # languages.
-# bip39validator/data_structs.py: Program data structures.
+# bip39validator/_data_structs.py: Program data structures.
 # Copyright 2020 Ali Sherief
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
