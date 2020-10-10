@@ -44,7 +44,7 @@ Description
 
 .. begin_long_description
 
-BIP39 Validator checks that wordlists use the _best practices: https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md written
+BIP39 Validator checks that wordlists use the `best practices`_ written
 in the BIP39 standard. These checks are ones that maintainers frequently ask
 submitters for compliance before merging the wordlist. By using this tool, you
 avoid having to manually verify the technical rules of the list.
@@ -62,6 +62,7 @@ BIP39 Validator has dependencies on the following modules:
 BIP39 Validator runs on Python 3.5 or higher, because that is what the dependencies
 require to run.
 
+.. _`best practices`: https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md
 .. end_long_description
 
 Installing
