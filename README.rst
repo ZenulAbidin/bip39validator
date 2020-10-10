@@ -44,7 +44,7 @@ Description
 
 .. begin_long_description
 
-BIP39 Validator checks that wordlists use the _best practices: https:// written
+BIP39 Validator checks that wordlists use the _best practices: https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md written
 in the BIP39 standard. These checks are ones that maintainers frequently ask
 submitters for compliance before merging the wordlist. By using this tool, you
 avoid having to manually verify the technical rules of the list.
