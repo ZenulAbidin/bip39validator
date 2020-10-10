@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'bip39validator'
+project = 'BIP39 Validator'
 copyright = '2020, Ali Sherief'
 author = 'Ali Sherief'
 
