@@ -52,7 +52,7 @@ distance between these two words is 2. But the distance between "cat" and "oatme
 
 - Replace "c" with "o"
 - Add "m" "e" "a" "l" at the end
-33
+
 Here's a slightly more complex example. To transform "research" into "searching", you need
 to:
 

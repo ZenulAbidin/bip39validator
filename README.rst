@@ -1,9 +1,9 @@
 BIP39 Validator
 ========================================================================================
-|docs| |travis| |appveyor|
+|docs| |travis| |appveyor| |bitcointalk|
 
 .. |docs| image:: https://readthedocs.org/projects/bip39validator/badge/?version=latest
-    :target: http://nanogui.readthedocs.org/en/latest/?badge=latest
+    :target: http://bip39validator.readthedocs.org/en/latest/?badge=latest
     :alt: Docs
 
 .. |travis| image:: https://travis-ci.org/wjakob/nanogui.svg?branch=master
@@ -38,12 +38,6 @@ exploring the results.
    :local:
    :backlinks: none
 
-Example screenshot
-----------------------------------------------------------------------------------------
-
-.. image:: https://github.com/wjakob/nanogui/raw/master/resources/screenshot.png
-   :alt: Screenshot of Example 1.
-   :align: center
 
 Description
 ----------------------------------------------------------------------------------------

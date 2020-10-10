@@ -5,12 +5,6 @@ BIP39 Validator
    :start-after: begin_brief_description
    :end-before:  end_brief_description
 
-Example Screenshot
-----------------------------------------------------------------------------------------
-
-.. image:: ../resources/screenshot.png
-   :alt: Screenshot of Example 1.
-   :align: center
 
 Description
 ----------------------------------------------------------------------------------------
@@ -33,6 +27,7 @@ Contents
    :maxdepth: 1
 
    introduction
+   installation
    running
    api
    examples

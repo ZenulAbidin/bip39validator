@@ -6,6 +6,7 @@
 .idea/
 
 # Operating system files
+.directory
 .DS_Store
 .DS_Store?
 ._*
