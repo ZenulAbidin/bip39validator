@@ -27,7 +27,7 @@ import requests
 from bip39validator.validation_tests import validate_sanitized_preamble, \
     validate_levenshtein_distance_preamble, validate_uniq_chars_preamble, \
     validate_length_preamble, validate_sanitized, \
-    validate_levenshtein_distance, validate_uniq_chars, validate_length
+    validate_levenshtein_distance, validate_uniq_chars, validate_length, regroup_prefix
 from bip39validator.util import contents2list, to_wordline_array, is_all_lower
 
 """Validation of BIP39 wordlists.
@@ -38,7 +38,7 @@ as a minimum Levenshtein distance between words, a
 minimum number of unique initial characters, and a
 maximum word length.
 
-These tests are not officially mandated by BIP39 but
+These test_vectors are not officially mandated by BIP39 but
 have been generally accepted by the community.
 """
 
@@ -92,8 +92,9 @@ class InvalidWordList(Exception):
 
     def __init__(self, **kwargs):
         self.is_sorted = kwargs['is_sorted']
-        self.has_2048_words = kwargs['has_2048_words']
-        self.num_words = kwargs['num_words']
+        self.err_lines = kwargs['err_lines']
+        self.has_2048_words = kwargs['length_exact']
+        self.num_words = kwargs['length']
         super(Exception, self).__init__()
 
 
@@ -125,12 +126,12 @@ class ValidWordList:
     def __init__(self, **kwargs):
         self.is_sorted = kwargs['is_sorted']
         self.err_lines = kwargs['err_lines']
-        self.has_2048_words = kwargs['has_2048_words']
-        self.num_words = kwargs['num_words']
+        self.has_2048_words = kwargs['length_exact']
+        self.num_words = kwargs['length']
 
 
 class ValidationFailed(Exception):
-    """One of the validation tests has failed.
+    """One of the validation test_vectors has failed.
 
   Exception raised by methods in ``BIP39WordList``. This
   class is not meant to be created directly.
@@ -171,11 +172,12 @@ class LevDistResult:
   """
     dists = []
 
-    def __init__(self, res):
-        self.word_pairs = [(a['words'][0], a['words'][1]) for a in res]
-        self.line_pairs = [(a['line_numbers'][0], a['line_numbers'][1]) for a in res]
-        self.index_pairs = [(a['indices'][0], a['indices'][1]) for a in res]
-        self.dists = [a['dist'] for a in res]
+    def __init__(self, res, threshold):
+        self.word_pairs = [(a['words'][0], a['words'][1]) for a in res.lev_dist_arr]
+        self.line_pairs = [(a['lines'][0], a['lines'][1]) for a in res.lev_dist_arr]
+        self.index_pairs = [(a['indices'][0], a['indices'][1]) for a in res.lev_dist_arr]
+        self.dists = [a['dist'] for a in res.lev_dist_arr]
+        self.threshold = threshold
 
     """Gets the word pairs which have a Levenshtein distance of ``dist``
 
@@ -184,7 +186,9 @@ class LevDistResult:
   :returns: a list of word pairs
   """
 
-    def getwordpairs_eq(self, dist=threshold):
+    def getwordpairs_eq(self, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
             .format(type(dist))
         assert dist > 0, 'Distance must be greater than 0'
@@ -202,7 +206,9 @@ class LevDistResult:
   :returns: a list of line pairs
   """
 
-    def getlinepairs_eq(self, dist=threshold):
+    def getlinepairs_eq(self, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
             .format(type(dist))
         assert dist > 0, 'Distance must be greater than 0'
@@ -220,7 +226,9 @@ class LevDistResult:
   :returns: a list of word pairs
   """
 
-    def getwordpairs_lt(self, dist=threshold):
+    def getwordpairs_lt(self, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
             .format(type(dist))
         assert dist > 0, 'Distance must be greater than 0'
@@ -238,7 +246,9 @@ class LevDistResult:
   :returns: a list of line number pairs
   """
 
-    def getlinepairs_lt(self, dist=threshold):
+    def getlinepairs_lt(self, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
             .format(type(dist))
         assert dist > 0, 'Distance must be greater than 0'
@@ -255,7 +265,9 @@ class LevDistResult:
   :type dist: int
   :returns: a list of word pairs"""
 
-    def getwordpairs_gt(self, dist=threshold):
+    def getwordpairs_gt(self, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
             .format(type(dist))
         assert dist > 0, 'Distance must be greater than 0'
@@ -272,7 +284,9 @@ class LevDistResult:
   :type dist: int
   :returns: a list of line number pairs"""
 
-    def getlinepairs_gt(self, dist=threshold):
+    def getlinepairs_gt(self, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
             .format(type(dist))
         assert dist > 0, 'Distance must be greater than 0'
@@ -391,7 +405,9 @@ class LevDistResult:
   :type dist: int
   :returns: list of Levenshtein distances between ``word`` and each word"""
 
-    def getdist_all_eq(self, word, dist=threshold):
+    def getdist_all_eq(self, word, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
             .format(type(word))
         assert len(word) > 0, "Cannot use empty string as word"
@@ -424,7 +440,9 @@ class LevDistResult:
   :type dist: int
   :returns: list of Levenshtein distances between ``word`` and each word"""
 
-    def getdist_all_lt(self, word, dist=threshold):
+    def getdist_all_lt(self, word, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
             .format(type(word))
         assert len(word) > 0, "Cannot use empty string as word"
@@ -457,7 +475,9 @@ class LevDistResult:
   :type dist: int
   :returns: list of Levenshtein distances between ``word`` and each word"""
 
-    def getdist_all_gt(self, word, dist=threshold):
+    def getdist_all_gt(self, word, dist=None):
+        if not dist:
+            dist = self.threshold
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
             .format(type(word))
         assert len(word) > 0, "Cannot use empty string as word"
@@ -550,40 +570,13 @@ class InitUniqResult:
     index_pairs = []
 
     def __init__(self, res, threshold):
-        self.word_pairs = [(a['words'][0], a['words'][1]) for a in res]
-        self.line_pairs = [(a['line_numbers'][0], a['line_numbers'][1]) for a in res]
-        self.index_pairs = [(a['indices'][0], a['indices'][1]) for a in res]
+        self.prefix_list = res['prefix_list']
+        self.n = res['n']
+        self.words = res['words']
+        self.lines = res['lines']
         self.threshold = threshold
-        self.regrouped_n = threshold
-        self._unroll()
-        self._regroup(threshold)
 
-    def _unroll(self):
-        # Organize self.groups by blocks of words with the same prefix
-        self.words_unrolled = []
-        self.lines_unrolled = []
-        for i in self.index_pairs:
-            if self.word_pairs[i[0]] not in self.words_unrolled and self.line_pairs[i[0]] not in \
-                    self.lines_unrolled:
-                self.words_unrolled.append(self.word_pairs[i[0]])
-                self.lines_unrolled.append(self.line_pairs[i[0]])
-            if self.word_pairs[i[1]] not in self.words_unrolled and self.line_pairs[i[1]] not in \
-                    self.lines_unrolled:
-                self.words_unrolled.append(self.word_pairs[i[1]])
-                self.lines_unrolled.append(self.line_pairs[i[1]])
 
-    def _regroup(self, threshold):
-        self.binned_uniq = {}
-        for word, line in zip(self.words_unrolled, self.lines_unrolled):
-            key = word[0:threshold]
-            if key not in self.binned_uniq:
-                self.binned_uniq[key] = [(word, line)]
-            else:
-                self.binned_uniq[key].append((word, line))
-        # Ensure the key groups are sorted
-        for key in self.binned_uniq.keys():
-            self.binned_uniq[key].sort()
-        self.regrouped_n = threshold
 
     """Gets the list of words and lines beginning with ``prefix``
 
@@ -596,10 +589,10 @@ class InitUniqResult:
             .format(type(prefix))
         assert len(prefix) > 0, "Cannot use empty string as prefix"
 
-        if len(prefix) != self.regrouped_n:
-            self._regroup(len(prefix))
+        n = len(prefix)
+        prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=n)
         try:
-            return self.binned_uniq[prefix]
+            return prefix_list[prefix]
         except KeyError as e:
             return []
 
@@ -614,7 +607,12 @@ class InitUniqResult:
             .format(type(prefix))
         assert len(prefix) > 0, "Cannot use empty string as prefix"
 
-        return [a[0] for a in self.similargroup(prefix)]
+        n = len(prefix)
+        prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=n)
+        try:
+            return [a[0] for a in prefix_list[prefix]]
+        except KeyError as e:
+            return []
 
     """Gets the list of lines of words beginning with ``prefix``
 
@@ -627,7 +625,12 @@ class InitUniqResult:
             .format(type(prefix))
         assert len(prefix) > 0, "Cannot use empty string as prefix"
 
-        return [a[1] for a in self.similargroup(prefix)]
+        n = len(prefix)
+        prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=n)
+        try:
+            return [a[1] for a in prefix_list[prefix]]
+        except KeyError as e:
+            return []
 
     """Gets the list of words and lines beginning with any of the prefixes in ``prefixes``
 
@@ -646,10 +649,10 @@ class InitUniqResult:
                 .format(type(prefix))
             assert len(prefix) > 0, "Cannot use empty string as prefix"
 
-            if len(prefix) != self.regrouped_n:
-                self._regroup(len(prefix))
+            n = len(prefix)
+            prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=n)
             try:
-                groups.append({prefix: self.binned_uniq[prefix]})
+                groups.append({prefix: prefix_list[prefix]})
             except KeyError as e:
                 pass
         return groups
@@ -660,12 +663,25 @@ class InitUniqResult:
   :type prefixes: str
   :returns: list of words beginning with any of the ``prefixes``"""
 
-    def similar_wordgroup_many(self, prefix):
-        assert type(prefix) == str, 'Invalid type "{}" for argument `prefix` (expected "str")' \
-            .format(type(prefix))
-        assert len(prefix) > 0, "Cannot use empty string as prefix"
+    def similar_wordgroup_many(self, prefixes):
+        assert type(prefixes) == list, 'Invalid type "{}" for argument `prefixes` (expected "list")' \
+            .format(type(prefixes))
+        assert len(prefixes) > 0, "Cannot use empty list as list of prefixes"
 
-        return [a[0] for a in self.similargroup_many(prefix)]
+        groups = []
+        for prefix in prefixes:
+            assert type(prefix) == str, 'Invalid type "{}" for list element of `prefixes` (expected "str")' \
+                .format(type(prefix))
+            assert len(prefix) > 0, "Cannot use empty string as prefix"
+
+            n = len(prefix)
+            prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=n)
+            try:
+                groups.append({prefix: [a[0] for a in prefix_list[prefix]]})
+            except KeyError as e:
+                pass
+        return groups
+
 
     """Gets the list of lines of words beginning with any of the prefixes in ``prefixes``
 
@@ -674,11 +690,23 @@ class InitUniqResult:
   :returns: list of lines of words beginning with any of the ``prefixes``"""
 
     def similar_linegroup_many(self, prefix):
-        assert type(prefix) == str, 'Invalid type "{}" for argument `prefix` (expected "str")' \
-            .format(type(prefix))
-        assert len(prefix) > 0, "Cannot use empty string as prefix"
+        assert type(prefixes) == list, 'Invalid type "{}" for argument `prefixes` (expected "list")' \
+            .format(type(prefixes))
+        assert len(prefixes) > 0, "Cannot use empty list as list of prefixes"
 
-        return [a[1] for a in self.similargroup_many(prefix)]
+        groups = []
+        for prefix in prefixes:
+            assert type(prefix) == str, 'Invalid type "{}" for list element of `prefixes` (expected "str")' \
+                .format(type(prefix))
+            assert len(prefix) > 0, "Cannot use empty string as prefix"
+
+            n = len(prefix)
+            prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=n)
+            try:
+                groups.append({prefix: [a[1] for a in prefix_list[prefix]]})
+            except KeyError as e:
+                pass
+        return groups
 
     """Gets the entire hash table of words and lines grouped by all prefixes of length ``n``
 
@@ -686,14 +714,15 @@ class InitUniqResult:
   :type n: int
   :returns: dictionary of (word, line) tuples grouped by length ``n`` prefixes"""
 
-    def similargroup_all(self, n=threshold):
+    def similargroup_all(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Prefix length must be greater than 0'
 
-        if n != self.regrouped_n:
-            self._regroup(n)
-        return self.binned_uniq
+        prefix_list = regroup_prefix(words=self.words, lines=self.lines, n=self.threshold)
+        return prefix_list
 
     """Gets the entire hash table of words grouped by all prefixes of length ``n``
 
@@ -743,10 +772,10 @@ class MaxLengthResult:
     """Array of indicies that reference the corresponding ``words`` and ``lines``"""
     indices = []
 
-    def __init__(self, res, n):
-        self.threshold = n
+    def __init__(self, res, threshold):
+        self.threshold = threshold
         self.words = [a['word'] for a in res]
-        self.lines = [a['lines'] for a in res]
+        self.lines = [a['line'] for a in res]
         self.indices = [a['index'] for a in res]
 
     """Gets the words which have a length of ``n``
@@ -755,7 +784,9 @@ class MaxLengthResult:
   :type n: int
   :returns: a list of words"""
 
-    def getwords_eq(self, n=threshold):
+    def getwords_eq(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Length must be greater than 0'
@@ -772,7 +803,9 @@ class MaxLengthResult:
   :type n: int
   :returns: a list of line numbers"""
 
-    def getlines_eq(self, n=threshold):
+    def getlines_eq(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Length must be greater than 0'
@@ -789,7 +822,9 @@ class MaxLengthResult:
   :type n: int
   :returns: a list of words"""
 
-    def getwords_lt(self, n=threshold):
+    def getwords_lt(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Length must be greater than 0'
@@ -806,7 +841,9 @@ class MaxLengthResult:
   :type n: int
   :returns: a list of line numbers"""
 
-    def getlines_lt(self, n=threshold):
+    def getlines_lt(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Length must be greater than 0'
@@ -823,7 +860,9 @@ class MaxLengthResult:
   :type n: int
   :returns: a list of words"""
 
-    def getwords_gt(self, n=threshold):
+    def getwords_gt(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Length must be greater than 0'
@@ -840,7 +879,9 @@ class MaxLengthResult:
   :type n: int
   :returns: a list of line numbers"""
 
-    def getlines_gt(self, n=threshold):
+    def getlines_gt(self, n=None):
+        if not n:
+            n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
             .format(type(n))
         assert n > 0, 'Length must be greater than 0'
@@ -918,8 +959,8 @@ class BIP39WordList:
 
     :param desc: textual description of the word list
     :type desc: str
-    :param string: byte string buffer to read the words from, defaults to None
-    :type string: bytes, optional
+    :param string: string buffer to read the words from, defaults to None
+    :type string: str, optional
     :param handle: file handle to read the words from, defaults to None
     :type handle: class:``_io.TextIOWrapper``, optional
     :param url: URL to read the words from, defaults to None
@@ -932,7 +973,7 @@ class BIP39WordList:
         self.desc = desc
 
         if string:
-            assert type(string) == bytes, 'Invalid type "{}" for argument `string` (expected "bytes")' \
+            assert type(string) == str, 'Invalid type "{}" for argument `string` (expected "str")' \
                 .format(type(string))
             assert len(string) > 0, "Cannot use empty bytes string as prefix"
 
@@ -1014,7 +1055,7 @@ class BIP39WordList:
       """
         low, high, callback, kwargs = self._test_lowercase_1()
         for i in range(low, high):
-            kwargs = callback(kwargs)
+            kwargs = callback(i, **kwargs)
         return self._test_lowercase_2(kwargs)
 
     def _test_lowercase_1(self):
@@ -1046,7 +1087,7 @@ class BIP39WordList:
         self.test_lowercase()
         low, high, callback, kwargs = self._test_lev_distance_1(n)
         for i in range(low, high):
-            kwargs = callback(kwargs)
+            kwargs = callback(i, **kwargs)
         return self._test_lev_distance_2(kwargs)
 
     def _test_lev_distance_1(self, n):
@@ -1054,7 +1095,7 @@ class BIP39WordList:
 
     def _test_lev_distance_2(self, kwargs):
         success, res = validate_levenshtein_distance(**kwargs)
-        obj = LevDistResult(res)
+        obj = LevDistResult(res, threshold=kwargs['n'])
         if success:
             return obj
         else:
@@ -1082,7 +1123,7 @@ class BIP39WordList:
 
         low, high, callback, kwargs = self._test_initial_chars_1(n)
         for i in range(low, high):
-            kwargs = callback(kwargs)
+            kwargs = callback(i, **kwargs)
         return self._test_initial_chars_2(kwargs)
 
     def _test_initial_chars_1(self, n):
@@ -1114,7 +1155,7 @@ class BIP39WordList:
 
         low, high, callback, kwargs = self._test_max_length_1(n)
         for i in range(low, high):
-            kwargs = callback(kwargs)
+            kwargs = callback(i, **kwargs)
         return self._test_max_length_2(kwargs)
 
     def _test_max_length_1(self, n):
@@ -1122,7 +1163,7 @@ class BIP39WordList:
 
     def _test_max_length_2(self, kwargs):
         success, res = validate_length(**kwargs)
-        obj = MaxLengthResult(res, n=kwargs['n'])
+        obj = MaxLengthResult(res, threshold=kwargs['n'])
         if success:
             return obj
         else:

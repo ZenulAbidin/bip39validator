@@ -1,6 +1,6 @@
 # BIP39 Wordlist Validator - A tool to validate BIP39 wordlists in Latin
 # languages.
-# bip39validator/_util.py: Supporting utility functions.
+# bip39validator/util.py: Supporting utility functions.
 # Copyright 2020 Ali Sherief
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,6 +25,28 @@ import unicodedata as ud
 from bip39validator.data_structs import WordAndLineArray
 
 
+
+def longestCommonPrefix(strs):
+    """
+    :type strs: List[str]
+    :rtype: str
+    """
+    if len(strs) == 0:
+        return ""
+    current = strs[0]
+    for i in range(1, len(strs)):
+        temp = ""
+        if len(current) == 0:
+            break
+        for j in range(len(strs[i])):
+            if j < len(current) and current[j] == strs[i][j]:
+                temp += current[j]
+            else:
+                break
+        current = temp
+    return current
+
+
 # Credits: https://stackoverflow.com/a/15547803/12452330
 def rmdiacritics(word):
     """
@@ -45,7 +67,7 @@ def rmdiacritics(word):
     return ret_word
 
 
-# Lambda function that tests a character if it's lowercase English.
+# Lambda function that test_vectors a character if it's lowercase English.
 # Do not use str.islower() because it also returns true for accented lowercase
 # letters.
 def is_lower(c):
@@ -77,7 +99,7 @@ def to_wordline_array(l):
     zipped_l_arr.sort(key=sortkey)
 
     # Unzip the list, split the tuple elements in their own arrays.
-    return WordAndLineArray(zip(*zipped_l_arr))
+    return WordAndLineArray(list(zip(*zipped_l_arr)))
 
 
 # Given the entirety of the file read as a string buffer `buf`, split it by

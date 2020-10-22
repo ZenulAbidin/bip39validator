@@ -25,7 +25,7 @@ import argparse
 import pdb
 from os.path import abspath
 from bip39validator import BIP39WordList, InvalidWordList, ValidationFailed
-from bip39validator.logging import setargs, progressbar, logerror, loginfo, \
+from bip39validator._logging import setargs, progressbar, logerror, loginfo, \
     logdefault, separator, logwarning
 from bip39validator._version import __version__
 
@@ -44,10 +44,10 @@ There is NO WARRANTY, to the extent permitted by law.
 Written by Ali Sherief.""".format(__version__)
 
 
-def abort():
-    if args.debug:
+def abort(debug):
+    if debug:
         logerror("Debug mode on, entering pdb")
-        pdb.run('')
+        pdb.set_trace()
         exit(1)
     else:
         logerror("Aborting")
@@ -90,11 +90,12 @@ def main():
   succeeded or failed', action='store_true')
         parser.add_argument('--debug', dest='debug', action='store_true',
                             help='turn on debugging mode (intended for developers)')
+        parser.add_argument('--pycharm-debug', dest='pycharm_debug', action='store_true',
+                            help='re-raise exceptions out of main() to Pycharm (intended for developers)')
         parser.add_argument('-v', '--version', action='version',
                             version=version_str())
 
         args = parser.parse_args()
-
 
         # If there is an output file, then attempt to open it.
         if args.output:
@@ -107,7 +108,7 @@ def main():
             except OSError as e:
                 logerror("open {} for writing failed: {}".format(e.filename,
                                                                  e.strerror))
-                abort()
+                abort(args.debug)
         else:
             setargs(None, args)
 
@@ -115,29 +116,28 @@ def main():
         if args.lev_dist <= 0:
             logerror("Invalid value for --min-levenshtein-distance {}".format(
                 args.lev_dist))
-            abort()
+            abort(args.debug)
         if args.init_uniq <= 0:
             logerror("Invalid value for --min-initial-unique {}".format(
                 args.init_uniq))
-            abort()
+            abort(args.debug)
         if args.max_length <= 0:
             logerror("Invalid value for --max-length {}".format(
                 args.max_length))
-            abort()
+            abort(args.debug)
 
         try:
             if not args.quiet:
                 logdefault("Reading wordlist file {}".format(args.input))
-            with open(args.input, 'w') as f:
-                bip39 = BIP39WordList(args.input, f)
-                # s = f.read()
+            with open(args.input) as f:
+                bip39 = BIP39WordList(desc=f"{args.input}", handle=f)
                 # word_line_arr = to_wordline_array(contents2list(s))
                 # loginfo("{} words read".format(len(word_line_arr.word_list))
                 loginfo("{} words read".format(len(bip39)))
         except OSError as e:
             logerror("Cannot read {}: {}".format(e.filename,
                                                  e.strerror))
-            abort()
+            abort(args.debug)
 
         tally = 0
         total = 4
@@ -166,8 +166,8 @@ def main():
                 logerror("Word \"{}\" (line{}) has a non-lowercase character\
 or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line))
             logerror("Valid characters test failed")
-            logerror("Cannot perform additional tests")
-            abort()
+            logerror("Cannot perform additional test_vectors")
+            abort(args.debug)
 
         logdefault("Finished checking wordlist for invalid characters")
         separator()
@@ -188,19 +188,19 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
             except ValidationFailed as e:
                 if not args.quiet:
                     lev_dist = e.status_obj
-                    words_lines = lev_dist.getwordpairs_lt()
+                    word_pairs = lev_dist.getwordpairs_lt()
                     logerror("{} word pairs with Levenshtein distance less than {}\n" \
-                             .format(len(words_lines), args.lev_dist))
+                             .format(len(word_pairs), args.lev_dist))
                     for i in range(1, args.lev_dist):
-                        words_list = [*zip(lev_dist.getwordpairs_lt(), lev_dist.getlinepairs_lt())]
+                        words_list = [*zip(lev_dist.getwordpairs_eq(i), lev_dist.getlinepairs_eq(i))]
                         logerror("{} word pairs with Levenshtein distance *equal* to {}:" \
                                  .format(len(words_list), i))
-                        for words, lines in words_lines:
-                            logerror("    \"{}\" (line {}) <--> \"{}\" (line {})", words[0],
-                                     lines[0], words[1], lines[1])
+                        for words, lines in words_list:
+                            logerror("    \"{}\" (line {}) <--> \"{}\" (line {})" \
+                                    .format(words[0], lines[0], words[1], lines[1]))
                         logerror("")
                     logerror("{} total words below minimum Levenshtein distance".format(len(
-                        words_lines.keys())))
+                        word_pairs)))
                 logerror("Levenshtein distance test failed")
 
             logdefault("Finished performing Levenshtein distance test")
@@ -214,7 +214,7 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                 kwargs = progressbar('Checking initial characters', tup[0],
                                      tup[1], tup[2], **kwargs)
                 bip39._test_initial_chars_2(kwargs)
-                loginfo("All words are unique to {} initial chracters".format(args.init_uniq))
+                loginfo("All words are unique to {} initial characters".format(args.init_uniq))
                 tally += 1
                 loginfo("Unique initial characters test succeeded")
             except ValidationFailed as e:
@@ -228,7 +228,7 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                     for pre, group in groups:
                         logerror("Similar words with prefix \"{}\":").format(pre)
                         for wordline in group:
-                            logerror("    \"{}\" (line {})", wordline[0], wordline[1])
+                            logerror("    \"{}\" (line {})".format(wordline[0], wordline[1]))
                         logerror("")
                     logerror("{} total similar words".format(len(groups.keys())))
                 logerror("Unique initial characters test failed")
@@ -260,11 +260,14 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
             logdefault("Finished maximum word length test")
             separator()
 
-        logdefault("{} of {} tests passed".format(tally, total))
+        logdefault("{} of {} test_vectors passed".format(tally, total))
         exit(0)
     except Exception as e:
         print("Got unknown exception {}: {}".format(type(e), str(e)))
-        abort()
+        if args.pycharm_debug:
+            raise e
+        else:
+            abort(args.debug)
 
 
 if __name__ == "__main__":
