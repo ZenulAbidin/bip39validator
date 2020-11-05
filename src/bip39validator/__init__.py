@@ -976,11 +976,9 @@ class BIP39WordList:
     handle or a URL. The precedence order of the inputs
     is ``string``, then ``handle``, then ``url``. The wordlist
     is expected to contain one word on each line with no
-    intermediate whitespaces or blank lines. ###(this includes newline
+    intermediate whitespaces or blank lines (this includes newline
     at the end of the file), but actual validation of
     these requirements is not performed here.
-
-    This method implicitly calls `test_lowercase()`.
 
     :param desc: textual description of the word list
     :type desc: str
@@ -1067,8 +1065,6 @@ class BIP39WordList:
             return self.word_line_arr.__getattribute__(key)
         # FIXME hanging?
 
-    # This is not a true validation test, because it is mandatory and must always
-    # succeed.
     def test_lowercase(self):
         """Checks for forbidden characters in a wordlist.
 
