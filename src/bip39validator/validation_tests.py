@@ -86,7 +86,7 @@ def uniq_chars_internal_2(i_dummy, words=[], lines=[], n=0, prefix_list={}):
             i_start = i
             i_end = i + 1
             if matches(words_lines, i, i + 1, m):
-                for j in range(i + 2, len(words_lines)):
+                for j in range(i + 1, len(words_lines)):
                     if not matches(words_lines, i_start, j, m):
                         break
                     i_end = j
@@ -95,14 +95,16 @@ def uniq_chars_internal_2(i_dummy, words=[], lines=[], n=0, prefix_list={}):
             i = i_end
         for d in reversed(delete_indices):
             words_lines.pop(d)
+        if not words_lines:
+            break
         delete_indices = []
-    prefix_list[''] = words_lines
+    #prefix_list[''] = words_lines
     kwargs = {'words': words, 'lines': lines, 'n': n, 'prefix_list': prefix_list}
     return kwargs
 
 
 def regroup_prefix(words, lines, threshold):
-    ret = uniq_chars_internal_2(0, words=words, lines=lines, n=threshold)
+    ret = uniq_chars_internal_2(0, words=words, lines=lines, n=threshold, prefix_list={})
     return ret['prefix_list']
 
 
@@ -185,7 +187,6 @@ def validate_sanitized(kwargs):
         return True, stats
 
 
-# FIXME these don't return objects that the API expects.
 
 # Given a WordAndLineArray data structure `word_line_arr`, validate that all
 # word pairs have a Levenshtein distance of at least `n`. Assume that the
