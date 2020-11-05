@@ -95,7 +95,7 @@ Running
 
 You invoke BIP39 Validator like this:
 
-.. code-block::sh
+.. code-block:: sh
 
    bip39validator [OPTIONS] {INPUT_FILE | URL_OF_TEXT_FILE}
 
