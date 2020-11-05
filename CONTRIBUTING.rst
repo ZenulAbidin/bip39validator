@@ -31,6 +31,9 @@ details and adhere to the following rules to make the process as smooth as possi
 - Make small and clean pull requests that are easy to review but make sure they do add
   value by themselves.
 - Make sure you have tested any new functionality (e.g. if you made a new test).
+
+  - Unit tests can be run using ``python -m unittest discover src/tests/`` to ensure that
+    your patch doesn't break existing functionality.
 - This project has a strong focus on providing general solutions using a minimal amount
   of code, thus small pull requests are greatly preferred.
 - Read the remainder of this document, adhering to the documentation requirements.
