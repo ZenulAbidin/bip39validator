@@ -32,7 +32,6 @@ Contents
    api
    examples
    contributing
-   donate
 
 
 Indices and tables

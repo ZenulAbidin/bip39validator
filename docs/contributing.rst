@@ -15,3 +15,11 @@ lists the most essential pdb commands.
 exception catcher and lets runaway exceptions get caught by Pycharm's debug mode. Despite
 its name, it works with other IDEs as well. Use this option if your IDE offers a better
 debugging experience than command-line pdb.
+
+Donate
+----------------------------------------------------------------------------------------
+
+If you are not a developer then there is another way to contribute to this project. You
+can support future development of BIP39 Validator by sending bitcoin to my address,
+**bc1q4djl6pxt90nfs8fufdul26ufxukxxrczsfjj0h** or equivalently, click the Donate button
+at the left of this documentation.
