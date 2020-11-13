@@ -22,7 +22,7 @@
 # IN THE SOFTWARE.
 
 import unicodedata as ud
-from bip39validator.data_structs import WordAndLineArray
+from bip39validator.internal.data_structs import WordAndLineArray
 
 
 

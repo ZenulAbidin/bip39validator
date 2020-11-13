@@ -1,5 +1,6 @@
 from unittest import TestCase
-from bip39validator import BIP39WordList, InvalidWordList, ValidationFailed
+from bip39validator import InvalidWordList, ValidationFailed
+from bip39validator.BIP39WordList import BIP39WordList
 
 valid_list = """abcdef
 ghijkl

@@ -1,5 +1,6 @@
 from unittest import TestCase
-from bip39validator import BIP39WordList, ValidationFailed
+from bip39validator import ValidationFailed
+from bip39validator.BIP39WordList import BIP39WordList
 
 maxlength_l4 = """blocks
 block

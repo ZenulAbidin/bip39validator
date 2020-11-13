@@ -52,7 +52,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'bip39validator = bip39validator.main:main',
+            'bip39validator = bip39validator.__main__:main',
         ]
     },
 )

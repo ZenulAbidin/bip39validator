@@ -1,6 +1,6 @@
 # BIP39 Wordlist Validator - A tool to validate BIP39 wordlists in Latin
 # languages.
-# main.py: Main program
+# __main__.py: Main program
 # Copyright 2020 Ali Sherief
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,10 +24,12 @@
 import argparse
 import pdb
 from os.path import abspath
-from bip39validator import BIP39WordList, InvalidWordList, ValidationFailed
-from bip39validator._logging import setargs, progressbar, logerror, loginfo, \
+from .InvalidWordList import InvalidWordList
+from .ValidationFailed import ValidationFailed
+from .BIP39WordList import BIP39WordList
+from .internal.logging import setargs, progressbar, logerror, loginfo, \
     logdefault, separator, logwarning
-from bip39validator._version import __version__
+from bip39validator.__version__ import __version__
 
 default_lev = 2
 default_init_uniq = 4

@@ -25,8 +25,8 @@
 # program and the API.
 
 import jellyfish
-from bip39validator.data_structs import LevDistArray
-from bip39validator.util import is_all_lower
+from .data_structs import LevDistArray
+from .util import is_all_lower
 
 
 # Callback functions called from progressbar()

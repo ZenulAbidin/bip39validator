@@ -1,5 +1,5 @@
 from unittest import TestCase
-from bip39validator import BIP39WordList
+from bip39validator.BIP39WordList import BIP39WordList
 
 inituniq_2group_l3 = """quick
 quote"""

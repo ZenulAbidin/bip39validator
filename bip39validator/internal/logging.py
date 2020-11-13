@@ -1,5 +1,5 @@
 # BIP39 Wordlist Validator - A tool to validate BIP39 wordlists in Latin languages.
-# bip39validator/_logging.py: Console and file logging facilities
+# bip39validator/logging.py: Console and file logging facilities
 # Copyright 2020 Ali Sherief
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
