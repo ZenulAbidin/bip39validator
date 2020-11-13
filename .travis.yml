@@ -12,6 +12,6 @@ install:
 script:
   -  python -m pytest
 after_success:
-  - coverage run bip39validator tests/english.txt
-  - coverage xml
+  - python -m coverage run bip39validator tests/english.txt
+  - python -m coverage xml
   - bash <(curl -s https://codecov.io/bash)
