@@ -1,18 +1,17 @@
 BIP39 Validator
 ========================================================================================
-|docs| |travis| |appveyor| |bitcointalk|
+|docs| |travis| |pyversions| |bitcointalk|
 
 .. |docs| image:: https://readthedocs.org/projects/bip39validator/badge/?version=latest
     :target: http://bip39validator.readthedocs.org/en/latest/?badge=latest
     :alt: Docs
 
-.. |travis| image:: https://travis-ci.org/wjakob/nanogui.svg?branch=master
-   :target: https://travis-ci.org/wjakob/nanogui
+.. |travis| image:: https://travis-ci.com/ZenulAbidin/bip39validator.svg?branch=develop
+   :target: https://travis-ci.org/ZenulAbidin/bip39validator
    :alt: Travis Build Status
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/m8h3uyvdb4ej2i02/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/wjakob/nanogui/branch/master
-   :alt: Appveyor Build Status
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/bip39validator.svg
+    :target: https://pypi.org/project/bip39validator/
 
 .. |bitcointalk| image:: https://img.shields.io/badge/bitcointalk-thread-yellow
    :target: https://bitcointalk.org/index.php
