@@ -30,7 +30,7 @@ class TestBIP39WordList(TestCase):
         # We are going to load the english wordlist from the current folder
         # and also from the BIP Github repo.
         # Test fails if exceptions are thrown.
-        with open('english.txt') as f:
+        with open('./tests/english.txt') as f:
             bip39 = BIP39WordList("file_list", handle=f)
         res = bip39.test_lowercase()
 
@@ -52,7 +52,7 @@ class TestBIP39WordList(TestCase):
     # Only test members part of the public API. For these return objects,
     # none of the members are public. Just the methods.
     def test_test_lev_distance(self):
-        with open('english.txt') as f:
+        with open('./tests/english.txt') as f:
             bip39 = BIP39WordList("file_list", handle=f)
             try:
                 bip39.test_lev_distance(2)
@@ -61,11 +61,11 @@ class TestBIP39WordList(TestCase):
 
 
     def test_test_initial_chars(self):
-        with open('english.txt') as f:
+        with open('./tests/english.txt') as f:
             bip39 = BIP39WordList("file_list", handle=f)
             bip39.test_initial_chars(4)
 
     def test_test_max_length(self):
-        with open('english.txt') as f:
+        with open('./tests/english.txt') as f:
             bip39 = BIP39WordList("file_list", handle=f)
             bip39.test_initial_chars(4)

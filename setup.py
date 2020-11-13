@@ -3,8 +3,8 @@ from setuptools import setup, find_namespace_packages
 setup(
     name='bip39validator',
     version='1.0.0',
-    packages=find_namespace_packages(where='src'),
-    package_dir={'': 'src'},
+    packages=find_namespace_packages(where='.'),
+    package_dir={'bip39validator': 'bip39validator'},
     url='https://github.com/ZenulAbidin/bip39validator',
     license='MIT',
     author='Ali Sherief',
