@@ -97,29 +97,6 @@ class BIP39WordList:
     def __str__(self):
         return repr(self)
 
-    """Gets the line number if ``key`` is a word, or the
-       word if ``key`` is a line number
-
-    :param key: a word, or a line number in the wordlist
-    :type key: str
-    :returns: the corresponding line number or word
-    """
-
-    def __getitem__(self, key):
-        try:
-            if isinstance(key, str):
-                idx = self.lines_sorted[self.words.index(key)]
-                return idx
-            elif isinstance(key, int):
-                word = self.words[self.lines_sorted.index(key)]
-                return word
-        except (IndexError, ValueError) as e:
-            raise ValueError(key)
-
-        if any([key == item for item in self.words]):
-            return self.word_line_arr.__getattribute__(key)
-        # FIXME hanging?
-
     def test_lowercase(self):
         """Checks for forbidden characters in a wordlist.
 
