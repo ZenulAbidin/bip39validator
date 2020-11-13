@@ -24,10 +24,10 @@
 import argparse
 import pdb
 from os.path import abspath
-from .InvalidWordList import InvalidWordList
-from .ValidationFailed import ValidationFailed
-from .BIP39WordList import BIP39WordList
-from .internal.logging import setargs, progressbar, logerror, loginfo, \
+from bip39validator.InvalidWordList import InvalidWordList
+from bip39validator.ValidationFailed import ValidationFailed
+from bip39validator.BIP39WordList import BIP39WordList
+from bip39validator.internal.logging import setargs, progressbar, logerror, loginfo, \
     logdefault, separator, logwarning
 from bip39validator.__version__ import __version__
 
