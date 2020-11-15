@@ -1,4 +1,3 @@
-bip39validator
 jellyfish
 rich
 requests

@@ -8,6 +8,7 @@ jobs:
     name: "Python ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast:
       matrix:
         python-version: [ "3.6", "3.7", "3.8", "3.9" ]
     steps:
@@ -21,6 +22,6 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install -r requirements.txt
+          python -m pip install -r requirements.txt -r dev-requirements.txt
       - name: "Run pytest targets for ${{ matrix.python-version }}"
         run: "python -m pytest"
