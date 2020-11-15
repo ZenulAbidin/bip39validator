@@ -302,19 +302,6 @@ Contributing
 
 See CONTRIBUTING.md for details on how to contribute issues and pull requests to this project.
 
-
-Donate
-----------------------------------------------------------------------------------------
-
-.. begin_donate
-
-If this project has helped you, consider supporting my work. It will allow me to purchase
-better hardware to make bigger projects.
-
-Send bitcoin to my address, **bc1q4djl6pxt90nfs8fufdul26ufxukxxrczsfjj0h**.
-
-.. end_donate
-
 License
 ----------------------------------------------------------------------------------------
 
