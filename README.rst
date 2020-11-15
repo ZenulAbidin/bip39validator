@@ -1,12 +1,12 @@
 BIP39 Validator
 ========================================================================================
-|docs| |travis| |pyversions| |bitcointalk|
+|docs| |gh_actions| |pyversions| |bitcointalk|
 
 .. |docs| image:: https://readthedocs.org/projects/bip39validator/badge/?version=latest
     :target: http://bip39validator.readthedocs.org/en/latest/?badge=latest
     :alt: Docs
 
-.. |travis| image:: https://github.com/ZenulAbidin/bip39validator/workflows/tests/badge.svg?branch=develop
+.. |gh_actions| image:: https://github.com/ZenulAbidin/bip39validator/workflows/tests/badge.svg?branch=develop
      :target: https://github.com/ZenulAbidin/bip39validator/actions?workflow=tests
    :alt: Github Actions Build Status
 
