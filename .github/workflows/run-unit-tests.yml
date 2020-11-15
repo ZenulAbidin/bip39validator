@@ -4,14 +4,12 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  test:
+  tests:
+    name: "Python ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
-    tests:
-      name: "Python ${{ matrix.python-version }}"
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          python-version: [ "3.6", "3.7", "3.8", "3.9" ]
+    strategy:
+      matrix:
+        python-version: [ "3.6", "3.7", "3.8", "3.9" ]
     steps:
       - uses: "actions/checkout@v2"
       - uses: "actions/setup-python@v2"
