@@ -6,7 +6,7 @@ BIP39 Validator
     :target: http://bip39validator.readthedocs.org/en/latest/?badge=latest
     :alt: Docs
 
-.. |travis| image:: https://github.com/ZenulAbidin/bip39validator/workflows/tests/badge.svg?branch=master
+.. |travis| image:: https://github.com/ZenulAbidin/bip39validator/workflows/tests/badge.svg?branch=develop
      :target: https://github.com/ZenulAbidin/bip39validator/actions?workflow=tests
    :alt: Github Actions Build Status
 
