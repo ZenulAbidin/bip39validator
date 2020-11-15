@@ -6,9 +6,9 @@ BIP39 Validator
     :target: http://bip39validator.readthedocs.org/en/latest/?badge=latest
     :alt: Docs
 
-.. |travis| image:: https://travis-ci.com/ZenulAbidin/bip39validator.svg?branch=develop
-   :target: https://travis-ci.org/ZenulAbidin/bip39validator
-   :alt: Travis Build Status
+.. |travis| image:: https://github.com/ZenulAbidin/bip39validator/workflows/tests/badge.svg?branch=master
+     :target: https://github.com/ZenulAbidin/bip39validator/actions?workflow=tests
+   :alt: Github Actions Build Status
 
 .. |pyversions| image:: https://img.shields.io/pypi/pyversions/bip39validator.svg
     :target: https://pypi.org/project/bip39validator/
