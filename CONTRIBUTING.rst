@@ -38,6 +38,7 @@ details and adhere to the following rules to make the process as smooth as possi
   of code, thus small pull requests are greatly preferred.
 - Read the remainder of this document, adhering to the documentation requirements.
 - If making a purely documentation PR, please prefix the commit with ``[docs]``
+- Ensure that you make a pull request to the **develop** branch, not to master.
 
   - E.g. ``[docs] Adding documentation for class X.``
 

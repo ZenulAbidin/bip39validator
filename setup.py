@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name='bip39validator',
-    version='1.0.0',
+    version='1.0.0.4',
     packages=find_namespace_packages(where='.'),
     package_dir={'bip39validator': 'bip39validator'},
     url='https://github.com/ZenulAbidin/bip39validator',
