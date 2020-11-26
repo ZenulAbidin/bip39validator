@@ -220,7 +220,8 @@ class BIP39WordList:
 
     def _test_max_length_2(self, kwargs):
         success, res = validate_length(**kwargs)
-        obj = MaxLengthResult(res, threshold=kwargs['n'])
+        obj = MaxLengthResult(res, self.words_sorted, self.lines_sorted,
+                              threshold=kwargs['n'])
         if success:
             return obj
         else:

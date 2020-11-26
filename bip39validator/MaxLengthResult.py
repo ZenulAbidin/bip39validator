@@ -16,14 +16,28 @@ class MaxLengthResult:
     """Array of line numbers corresponding to each word in ``words``"""
     lines = []
 
-    """Array of indicies that reference the corresponding ``words`` and ``lines``"""
+    """Array of indices that reference the corresponding ``words`` and ``lines``"""
     indices = []
 
-    def __init__(self, res, threshold):
+    def __init__(self, res, words_sorted, lines_sorted, threshold):
         self.threshold = threshold
-        self.words = [a['word'] for a in res]
-        self.lines = [a['line'] for a in res]
-        self.indices = [a['index'] for a in res]
+        self.words_long = [a['word'] for a in res]
+        self.lines_long = [a['line'] for a in res]
+        self.words = [a for a in words_sorted]
+        self.lines = [a for a in lines_sorted]
+
+    """Gets the words that are longer than the threshold tested against.
+
+      :returns: a list of words"""
+    def getwords_long(self):
+        return self.words_long
+
+    """Gets the line numbers of the words that are longer than the threshold
+    tested against.
+
+    :returns: a list of line numbers"""
+    def getlines_long(self):
+        return self.lines_long
 
     """Gets the words which have a length of ``n``
 

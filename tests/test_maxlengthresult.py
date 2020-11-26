@@ -8,6 +8,24 @@ bloc
 blo"""
 
 class TestMaxLengthResult(TestCase):
+    def test_getwords_long(self):
+        bip39 = BIP39WordList("maxlength_l4", string=maxlength_l4)
+        try:
+            res = bip39.test_max_length(4)
+        except ValidationFailed as e:
+            res = e.status_obj
+        expected_res = ["block", "blocks"]
+        self.assertEqual(expected_res, res.getwords_long())
+
+    def test_getlines_long(self):
+        bip39 = BIP39WordList("maxlength_l4", string=maxlength_l4)
+        try:
+            res = bip39.test_max_length(4)
+        except ValidationFailed as e:
+            res = e.status_obj
+        expected_res = [2, 1]
+        self.assertEqual(expected_res, res.getlines_long())
+
     def test_getwords_eq(self):
         bip39 = BIP39WordList("maxlength_l4", string=maxlength_l4)
         try:
