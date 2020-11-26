@@ -17,6 +17,12 @@ BIP39 Validator
    :target: https://bitcointalk.org/index.php
    :alt: Bitcointalk thread
 
+.. image:: https://files.notatether.com/bip39validator.gif
+  :width: 600
+  :alt: bip39validator sample run
+
+|
+
 .. begin_brief_description
 
 BIP39 Validator is a small program for checking BIP39 wordlists for Latin languages.
@@ -31,6 +37,7 @@ exploring the results.
 
 .. end_brief_description
 
+- `View Demo on Google Colab <https://colab.research.google.com/drive/1nJQl25XhjtUNzF3MY_MdH0AotwgdlwOz?usp=sharing>`_
 - `Documentation <https://bip39validator.readthedocs.io>`_
 
 .. contents:: Contents
