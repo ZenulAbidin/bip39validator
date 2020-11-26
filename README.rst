@@ -175,7 +175,7 @@ Here are some of the anticipated uses of the BIP39 Validator API.
 
    f = open('wordlist-en.txt')
    try:
-     wordlist = BIP39Wordlist('English wordlist', f)
+     wordlist = BIP39Wordlist('English wordlist', handle=f)
      wordlist.test_lev_distance(2)
      # At this point, no word pairs have Levenshtein distance < 2.
    except ValidationFailed as e:
@@ -196,7 +196,7 @@ Here are some of the anticipated uses of the BIP39 Validator API.
 
    f = open('wordlist-en.txt')
    try:
-     wordlist = BIP39Wordlist('English wordlist', f)
+     wordlist = BIP39Wordlist('English wordlist', handle=f)
      wordlist.test_lev_distance(2)
      # At this point, the percentage and number of
      # words fulfilling the condition are 0.
@@ -216,7 +216,7 @@ Here are some of the anticipated uses of the BIP39 Validator API.
 
    f = open('wordlist-en.txt')
    try:
-     wordlist = BIP39Wordlist('English wordlist', f)
+     wordlist = BIP39Wordlist('English wordlist', handle=f)
      wordlist.test_initial_chars(4)
      # At this point, all words are unique in at least 4 initial characters
    except ValidationFailed as e:
@@ -235,7 +235,7 @@ Here are some of the anticipated uses of the BIP39 Validator API.
 
    f = open('wordlist-en.txt')
    try:
-     wordlist = BIP39Wordlist('English wordlist', f)
+     wordlist = BIP39Wordlist('English wordlist', handle=f)
      wordlist.test_initial_chars(4)
      # At this point, the percentage and number of
      # words fulfilling the condition are 0.
@@ -256,7 +256,7 @@ Here are some of the anticipated uses of the BIP39 Validator API.
 
    f = open('wordlist-en.txt')
    try:
-     wordlist = BIP39Wordlist('English wordlist', f)
+     wordlist = BIP39Wordlist('English wordlist', handle=f)
      wordlist.test_max_length(8)
      # At this point, all words are no longer than 8 characters
    except ValidationFailed as e:
@@ -276,7 +276,7 @@ Here are some of the anticipated uses of the BIP39 Validator API.
 
    f = open('wordlist-en.txt')
    try:
-     wordlist = BIP39Wordlist('English wordlist', f)
+     wordlist = BIP39Wordlist('English wordlist', handle=f)
      wordlist.test_max_length(8)
      # At this point, the percentage and number of
      # words fulfilling the condition are 0.
@@ -305,7 +305,7 @@ Then install the module dependencies using:
 
 .. code-block:: sh
 
-   pip3 install -r requirements.txt
+   pip3 install -r requirements.txt -r dev-requirements.txt
 
 .. end_local_development
 
