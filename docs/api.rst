@@ -40,19 +40,19 @@ API Reference
 .. module:: bip39validator
 
 .. autoclass:: bip39validator.BIP39WordList
-   :inherited-members:
+   :members:
 
 .. autoclass:: bip39validator.ValidWordList
-   :inherited-members:
+   :members:
 
 .. autoclass:: bip39validator.LevDistResult
-   :inherited-members:
+   :members:
 
 .. autoclass:: bip39validator.InitUniqResult
-   :inherited-members:
+   :members:
 
 .. autoclass:: bip39validator.MaxLengthResult
-   :inherited-members:
+   :members:
 
 Exceptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
