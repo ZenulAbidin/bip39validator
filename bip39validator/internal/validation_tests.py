@@ -25,6 +25,7 @@
 # program and the API.
 
 import jellyfish
+
 from .data_structs import LevDistArray
 from .util import is_all_lower
 
@@ -32,16 +33,17 @@ from .util import is_all_lower
 # Callback functions called from progressbar()
 
 def compute_lev_dist_interal(i, distance_array=[], wordlist=[], line_numbers=[],
-                             n=0):
+                             strarray="", n=0):
     for j in range(0, i):  # j between 0 and i-1 inclusive
         dist = jellyfish.levenshtein_distance(wordlist[j], wordlist[i])
-        lev_array = {'dist': dist, 'indices': (j, i),
-                     'lines': (line_numbers[j], line_numbers[i]),
-                     'words': (wordlist[j], wordlist[i])
-                     }
-        distance_array.append(lev_array)
+        l = len(wordlist)
+        if j == l-2 and i == l-1:
+            # The end
+            strarray += f"{dist},{j},{i}"
+        else:
+            strarray += f"{dist},{j},{i}-"
     return {'distance_array': distance_array, 'wordlist': wordlist,
-            'line_numbers': line_numbers, 'n': n}
+            'line_numbers': line_numbers, 'strarray': strarray, 'n': n}
 
 
 def sanitize_internal(i, err_lines=[], l=[], line_nums=[]):
@@ -128,7 +130,7 @@ def validate_levenshtein_distance_preamble(word_line_arr, n):
     line_numbers = word_line_arr.line_numbers
 
     kwargs = {'distance_array': [], 'wordlist': wordlist,
-              'line_numbers': line_numbers, 'n': n}
+              'line_numbers': line_numbers, 'strarray': '', 'n': n}
     return 1, len(wordlist), compute_lev_dist_interal, kwargs
 
 
@@ -193,18 +195,23 @@ def validate_sanitized(kwargs):
 # WordAndLineArray is sorted.
 # Returns True if validation succeeded, else returns False.
 def validate_levenshtein_distance(**kwargs):
-    distance_array = kwargs['distance_array']
+    strarray = kwargs['strarray']
     n = kwargs['n']
-    lev_dist_arr = LevDistArray(distance_array)
+    lev_dist_arr = LevDistArray(strarray)
 
     # If lev_dist_arr is empty (has no elements), then this test succeeded.
     # Else it failed.
-    n_small_levdists = len([a for a in distance_array if a['dist'] < n])
+    n_small_levdists = 0
+    split = strarray.split('-')
+    for data in split:
+        dist = int(data.split(',')[0])
+        if dist < n:
+            n_small_levdists += 1
 
     if n_small_levdists > 0:
-        return False, lev_dist_arr
+        return False, (lev_dist_arr, split)
     else:
-        return True, lev_dist_arr
+        return True, (lev_dist_arr, split)
 
 
 # Given a WordAndLineArray data structure `word_line_arr`, validate that all

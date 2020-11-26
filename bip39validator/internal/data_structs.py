@@ -47,11 +47,6 @@ class LevDist:
         self.words = kwargs['words']
 
 
-# A data structure consisting of an array of LevDist values.
-# It is returned by the following functions:
-# - compute_levenshtein_distance()
-# And is passed to the following functions:
-# 
 class LevDistArray:
     def __init__(self, lev_dist_arr):
         self.lev_dist_arr = lev_dist_arr

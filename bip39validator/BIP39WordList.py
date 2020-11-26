@@ -152,7 +152,7 @@ class BIP39WordList:
 
     def _test_lev_distance_2(self, kwargs):
         success, res = validate_levenshtein_distance(**kwargs)
-        obj = LevDistResult(res, threshold=kwargs['n'])
+        obj = LevDistResult(res, self.words_sorted, self.lines_sorted, threshold=kwargs['n'])
         if success:
             return obj
         else:

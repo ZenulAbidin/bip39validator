@@ -32,12 +32,21 @@ class LevDistResult:
   """
     dists = []
 
-    def __init__(self, res, threshold):
-        self.word_pairs = [(a['words'][0], a['words'][1]) for a in res.lev_dist_arr]
-        self.line_pairs = [(a['lines'][0], a['lines'][1]) for a in res.lev_dist_arr]
-        self.index_pairs = [(a['indices'][0], a['indices'][1]) for a in res.lev_dist_arr]
-        self.dists = [a['dist'] for a in res.lev_dist_arr]
+    def __init__(self, res, words_sorted, lines_sorted, threshold):
+        lev, split = res
+        self.split = split
+        self.words_sorted = words_sorted
+        self.lines_sorted = lines_sorted
         self.threshold = threshold
+
+    def _index_pair(self, first, second):
+        return (first, second)
+
+    def _word_pair(self, first, second):
+        return (self.words_sorted[first], self.words_sorted[second])
+
+    def _line_pair(self, first, second):
+        return (self.lines_sorted[first], self.lines_sorted[second])
 
     """Gets the word pairs which have a Levenshtein distance of ``dist``
 
@@ -54,9 +63,13 @@ class LevDistResult:
         assert dist > 0, 'Distance must be greater than 0'
 
         pairs = []
-        for i in range(0, len(self.dists)):
-            if self.dists[i] == dist:
-                pairs.append(self.word_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split == dist:
+                pairs.append(self._word_pair(first, second))
         return pairs
 
     """Gets the line numbers of pairs which have a Levenshtein distance of ``dist``
@@ -74,9 +87,13 @@ class LevDistResult:
         assert dist > 0, 'Distance must be greater than 0'
 
         pairs = []
-        for i in range(0, len(self.dists)):
-            if self.dists[i] == dist:
-                pairs.append(self.line_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split == dist:
+                pairs.append(self._line_pair(first, second))
         return pairs
 
     """Gets the word pairs which have a Levenshtein distance less than ``dist``
@@ -94,9 +111,13 @@ class LevDistResult:
         assert dist > 0, 'Distance must be greater than 0'
 
         pairs = []
-        for i in range(0, len(self.dists)):
-            if self.dists[i] < dist:
-                pairs.append(self.word_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split < dist:
+                pairs.append(self._word_pair(first, second))
         return pairs
 
     """Gets the line numbers of pairs which have a Levenshtein distance less than ``dist``
@@ -114,9 +135,13 @@ class LevDistResult:
         assert dist > 0, 'Distance must be greater than 0'
 
         pairs = []
-        for i in range(0, len(self.dists)):
-            if self.dists[i] < dist:
-                pairs.append(self.line_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split < dist:
+                pairs.append(self._line_pair(first, second))
         return pairs
 
     """Gets the word pairs which have a Levenshtein distance greater than ``dist``
@@ -133,9 +158,13 @@ class LevDistResult:
         assert dist > 0, 'Distance must be greater than 0'
 
         pairs = []
-        for i in range(0, len(self.dists)):
-            if self.dists[i] > dist:
-                pairs.append(self.word_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split > dist:
+                pairs.append(self._word_pair(first, second))
         return pairs
 
     """Gets the line numbers of pairs which have a Levenshtein distance greater than ``dist``
@@ -152,9 +181,13 @@ class LevDistResult:
         assert dist > 0, 'Distance must be greater than 0'
 
         pairs = []
-        for i in range(0, len(self.dists)):
-            if self.dists[i] > dist:
-                pairs.append(self.line_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split > dist:
+                pairs.append(self._line_pair(first, second))
         return pairs
 
     """Gets the word pairs which have a Levenshtein distance inside the list ``dists``
@@ -174,8 +207,13 @@ class LevDistResult:
                 .format(type(dists[i]).__name__)
             assert dists[i] > 0, "Distance must be greater than 0"
 
-            if self.dists[i] in dists:
-                pairs.append(self.word_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split in dists:
+                pairs.append(self._word_pair(first, second))
         return pairs
 
     """Gets the line numbers of pairs which have a Levenshtein distance inside the list ``dists``
@@ -195,8 +233,13 @@ class LevDistResult:
                 .format(type(dists[i]).__name__)
             assert dists[i] > 0, "Distance must be greater than 0"
 
-            if self.dists[i] in dists:
-                pairs.append(self.line_pairs[i])
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split in dists:
+                pairs.append(self._line_pair(first, second))
         return pairs
 
     """Gets Levenshtein distance between ``word1`` and ``word2``
@@ -224,14 +267,21 @@ class LevDistResult:
             raise ValueError("{} is not all lowercase".format(word2))
         if word1 > word2:
             word1, word2 = (word2, word1)
-        arr = [self.dists[i] for i in range(0, len(self.word_pairs)) if
-               self.word_pairs[i][0] == word1 and self.word_pairs[i][1] == word2]
-        try:
-            dist = arr[0]
-            return dist
-        except IndexError as e:
+
+        dist = None
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if self.words_sorted[first] == word1 and self.words_sorted[second] == word2:
+                dist = dist_split
+                break
+        if not dist:
             raise KeyError("word pair \"{}\" and \"{}\" not found".format(word1,
                                                                           word2))
+        else:
+            return dist
 
     """Gets Levenshtein distance between `word` and all other words
 
@@ -245,14 +295,23 @@ class LevDistResult:
         assert len(word) > 0, "Cannot use empty string as word"
         assert is_all_lower(word), 'Word "{}" is not all ASCII lowercase'.format(word)
 
-        dist_arr = [self.dists[i] for i in range(0, len(self.word_pairs)) if
-                    self.word_pairs[i][0] == word or self.word_pairs[i][1] == word]
-        word_arr = [self.word_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    self.word_pairs[i][0] == word or self.word_pairs[i][1] == word]
-        line_arr = [self.line_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    self.word_pairs[i][0] == word or self.word_pairs[i][1] == word]
-        dist_all = [*zip(word_arr, line_arr, dist_arr)]
-        if dist_all == []:
+        dist_all = []
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            correct_idx = None
+            if self.words_sorted[first] == word:
+                correct_idx = first
+                other_idx = second
+            elif self.words_sorted[second] == word:
+                correct_idx = second
+                other_idx = first
+            if correct_idx != None:
+                dist_all.append((self._word_pair(other_idx, correct_idx),
+                                 self._line_pair(other_idx, correct_idx), dist_split))
+        if not dist_all:
             raise KeyError("word \"{}\" not found".format(word))
         else:
             return dist_all
@@ -277,17 +336,24 @@ class LevDistResult:
             .format(type(dist).__name__)
         assert dist > 0, 'Distance must be greater than 0'
 
-        dist_arr = [self.dists[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] == dist]
-        word_arr = [self.word_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] == dist]
-        line_arr = [self.line_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] == dist]
-        dist_all = [*zip(word_arr, line_arr, dist_arr)]
-        if dist_all == []:
+        dist_all = []
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split == dist:
+                correct_idx = None
+                if self.words_sorted[first] == word:
+                    correct_idx = first
+                    other_idx = second
+                elif self.words_sorted[second] == word:
+                    correct_idx = second
+                    other_idx = first
+                if correct_idx != None:
+                    dist_all.append((self._word_pair(other_idx, correct_idx),
+                                     self._line_pair(other_idx, correct_idx), dist_split))
+        if not dist_all:
             raise KeyError("word \"{}\" not found".format(word))
         else:
             return dist_all
@@ -312,17 +378,24 @@ class LevDistResult:
             .format(type(dist).__name__)
         assert dist > 0, 'Distance must be greater than 0'
 
-        dist_arr = [self.dists[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] < dist]
-        word_arr = [self.word_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] < dist]
-        line_arr = [self.line_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] < dist]
-        dist_all = [*zip(word_arr, line_arr, dist_arr)]
-        if dist_all == []:
+        dist_all = []
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split < dist:
+                correct_idx = None
+                if self.words_sorted[first] == word:
+                    correct_idx = first
+                    other_idx = second
+                elif self.words_sorted[second] == word:
+                    correct_idx = second
+                    other_idx = first
+                if correct_idx != None:
+                    dist_all.append((self._word_pair(other_idx, correct_idx),
+                                     self._line_pair(other_idx, correct_idx), dist_split))
+        if not dist_all:
             raise KeyError("word \"{}\" not found".format(word))
         else:
             return dist_all
@@ -347,17 +420,24 @@ class LevDistResult:
             .format(type(dist).__name__)
         assert dist > 0, 'Distance must be greater than 0'
 
-        dist_arr = [self.dists[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] > dist]
-        word_arr = [self.word_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] > dist]
-        line_arr = [self.line_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] > dist]
-        dist_all = [*zip(word_arr, line_arr, dist_arr)]
-        if dist_all == []:
+        dist_all = []
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split > dist:
+                correct_idx = None
+                if self.words_sorted[first] == word:
+                    correct_idx = first
+                    other_idx = second
+                elif self.words_sorted[second] == word:
+                    correct_idx = second
+                    other_idx = first
+                if correct_idx != None:
+                    dist_all.append((self._word_pair(other_idx, correct_idx),
+                                     self._line_pair(other_idx, correct_idx), dist_split))
+        if not dist_all:
             raise KeyError("word \"{}\" not found".format(word))
         else:
             return dist_all
@@ -385,17 +465,24 @@ class LevDistResult:
                 .format(type(dists[i]).__name__)
             assert dists[i] > 0, "Distance must be greater than 0"
 
-        dist_arr = [self.dists[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] in dists]
-        word_arr = [self.word_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] in dists]
-        line_arr = [self.line_pairs[i] for i in range(0, len(self.word_pairs)) if
-                    (self.word_pairs[i][0] == word or self.word_pairs[i][1] == word)
-                    and self.dists[i] in dists]
-        dist_all = [*zip(word_arr, line_arr, dist_arr)]
-        if dist_all == []:
+        dist_all = []
+        for node in self.split:
+            data = node.split(',')
+            dist_split = int(data[0])
+            first = int(data[1])
+            second = int(data[2])
+            if dist_split in dists:
+                correct_idx = None
+                if self.words_sorted[first] == word:
+                    correct_idx = first
+                    other_idx = second
+                elif self.words_sorted[second] == word:
+                    correct_idx = second
+                    other_idx = first
+                if correct_idx != None:
+                    dist_all.append((self._word_pair(other_idx, correct_idx),
+                                     self._line_pair(other_idx, correct_idx), dist_split))
+        if not dist_all:
             raise KeyError("word \"{}\" not found".format(word))
         else:
             return dist_all

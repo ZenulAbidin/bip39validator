@@ -14,7 +14,7 @@ class TestInitUniqResult(TestCase):
         bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
         res = bip39.test_initial_chars(3)
         expected_res = [("quick", 1), ("quote", 2)]
-        self.assertEqual(res.similargroup("qu"), expected_res)
+        self.assertEqual(expected_res, res.similargroup("qu"))
         for t in [0, ""]:
             try:
                 res.similargroup(t)
@@ -26,7 +26,7 @@ class TestInitUniqResult(TestCase):
         bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
         res = bip39.test_initial_chars(3)
         expected_res = ["quick", "quote"]
-        self.assertEqual(res.similar_wordgroup("qu"), expected_res)
+        self.assertEqual(expected_res, res.similar_wordgroup("qu"))
         for t in [0, ""]:
             try:
                 res.similar_wordgroup(t)
@@ -38,7 +38,7 @@ class TestInitUniqResult(TestCase):
         bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
         res = bip39.test_initial_chars(3)
         expected_res = [1, 2]
-        self.assertEqual(res.similar_linegroup("qu"), expected_res)
+        self.assertEqual(expected_res, res.similar_linegroup("qu"))
         for t in [0, ""]:
             try:
                 res.similar_linegroup(t)
@@ -51,7 +51,7 @@ class TestInitUniqResult(TestCase):
         res = bip39.test_initial_chars(3)
         expected_res = {"qu": [("quick", 1), ("quote", 2)], "ri":
             [("rich", 4), ("risk", 3)]}
-        self.assertEqual(res.similargroup_many(["qu", "ri"]), expected_res)
+        self.assertEqual(expected_res, res.similargroup_many(["qu", "ri"]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.similargroup_many(t)
@@ -64,7 +64,7 @@ class TestInitUniqResult(TestCase):
         res = bip39.test_initial_chars(3)
         expected_res = {"qu": ["quick", "quote"], "ri":
             ["rich", "risk"]}
-        self.assertEqual(res.similar_wordgroup_many(["qu", "ri"]), expected_res)
+        self.assertEqual(expected_res, res.similar_wordgroup_many(["qu", "ri"]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.similar_wordgroup_many(t)
@@ -77,7 +77,7 @@ class TestInitUniqResult(TestCase):
         res = bip39.test_initial_chars(3)
         expected_res = {"qu": [1, 2], "ri":
             [4, 3]}
-        self.assertEqual(res.similar_linegroup_many(["qu", "ri"]), expected_res)
+        self.assertEqual(expected_res, res.similar_linegroup_many(["qu", "ri"]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.similar_linegroup_many(t)
@@ -89,7 +89,7 @@ class TestInitUniqResult(TestCase):
         bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
         res = bip39.test_initial_chars(3)
         expected_res = {"qu": [("quick", 1), ("quote", 2)]}
-        self.assertEqual(res.similargroup_all(2), expected_res)
+        self.assertEqual(expected_res, res.similargroup_all(2))
         for t in [0, ""]:
             try:
                 res.similargroup_all(t)
@@ -101,7 +101,7 @@ class TestInitUniqResult(TestCase):
         bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
         res = bip39.test_initial_chars(3)
         expected_res = {"qu": ["quick", "quote"]}
-        self.assertEqual(res.similar_wordgroup_all(2), expected_res)
+        self.assertEqual(expected_res, res.similar_wordgroup_all(2))
         for t in [0, ""]:
             try:
                 res.similar_wordgroup_all(t)
@@ -113,7 +113,7 @@ class TestInitUniqResult(TestCase):
         bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
         res = bip39.test_initial_chars(3)
         expected_res = {"qu": [1, 2]}
-        self.assertEqual(res.similar_linegroup_all(2), expected_res)
+        self.assertEqual(expected_res, res.similar_linegroup_all(2))
         for t in [0, ""]:
             try:
                 res.similar_linegroup_all(t)

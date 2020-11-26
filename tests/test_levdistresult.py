@@ -17,7 +17,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [("brol", "brow")]
-        self.assertEqual(res.getwordpairs_eq(1), expected_res)
+        self.assertEqual(expected_res, res.getwordpairs_eq(1))
         try:
             res.getwordpairs_eq(2)
             self.fail()
@@ -31,7 +31,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(2,1)]
-        self.assertEqual(res.getlinepairs_eq(1), expected_res)
+        self.assertEqual(expected_res, res.getlinepairs_eq(1))
         try:
             res.getwordpairs_eq(0)
             self.fail()
@@ -45,7 +45,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [("brol", "brow")]
-        self.assertEqual(res.getwordpairs_lt(2), expected_res)
+        self.assertEqual(expected_res, res.getwordpairs_lt(2))
         try:
             res.getwordpairs_lt(0)
             self.fail()
@@ -59,7 +59,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(2, 1)]
-        self.assertEqual(res.getlinepairs_lt(2), expected_res)
+        self.assertEqual(expected_res, res.getlinepairs_lt(2))
         try:
             res.getlinepairs_lt(0)
             self.fail()
@@ -73,7 +73,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [("brown", "brpyt")]
-        self.assertEqual(res.getwordpairs_gt(2), expected_res)
+        self.assertEqual(expected_res, res.getwordpairs_gt(2))
         try:
             res.getwordpairs_gt(0)
             self.fail()
@@ -87,7 +87,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(1, 2)]
-        self.assertEqual(res.getlinepairs_gt(2), expected_res)
+        self.assertEqual(expected_res, res.getlinepairs_gt(2))
         try:
             res.getlinepairs_gt(0)
             self.fail()
@@ -102,7 +102,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [("brol", "brow")]
-        self.assertEqual(res.getwordpairs_list([1,2]), expected_res)
+        self.assertEqual(expected_res, res.getwordpairs_list([1,2]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.getwordpairs_list(t)
@@ -118,7 +118,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(2, 1)]
-        self.assertEqual(res.getlinepairs_list([1,2]), expected_res)
+        self.assertEqual(expected_res, res.getlinepairs_list([1,2]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.getlinepairs_list(t)
@@ -133,7 +133,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = 1
-        self.assertEqual(res.getdist("brow", "brol"), expected_res)
+        self.assertEqual(expected_res, res.getdist("brow", "brol"))
         for t in [(1, "abc"), ("", "abc"), ("ABC", "abc"),
                   ("abc", 1), ("abc", ""), ("abc", "ABC")]:
             try:
@@ -149,7 +149,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(("brol", "brow"), (2, 1), 1)]
-        self.assertEqual(res.getdist_all("brow"), expected_res)
+        self.assertEqual(expected_res, res.getdist_all("brow"))
         for t in [1, "", "ABC"]:
             try:
                 res.getdist_all(t)
@@ -164,7 +164,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(("brol", "brow"), (2, 1), 1)]
-        self.assertEqual(res.getdist_all_eq("brow", 1), expected_res)
+        self.assertEqual(expected_res, res.getdist_all_eq("brow", 1))
         for t in [1, "", "ABC"]:
             try:
                 res.getdist_all_eq(t, 1)
@@ -188,7 +188,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(("brol", "brow"), (2, 1), 1)]
-        self.assertEqual(res.getdist_all_lt("brow", 2), expected_res)
+        self.assertEqual(expected_res, res.getdist_all_lt("brow", 2))
         for t in [1, "", "ABC"]:
             try:
                 res.getdist_all_lt(t, 1)
@@ -211,8 +211,8 @@ class TestLevDistResult(TestCase):
             res = bip39.test_lev_distance(2)
         except ValidationFailed as e:
             res = e.status_obj
-        expected_res = [(("brown", "brpyt"), (1, 2), 3)]
-        self.assertEqual(res.getdist_all_gt("brown", 2), expected_res)
+        expected_res = [(("brpyt", "brown"), (2, 1), 3)]
+        self.assertEqual(expected_res, res.getdist_all_gt("brown", 2))
         for t in [1, "", "ABC"]:
             try:
                 res.getdist_all_gt(t, 1)
@@ -235,7 +235,7 @@ class TestLevDistResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [(("brol", "brow"), (2, 1), 1)]
-        self.assertEqual(res.getdist_all_list("brow", [1]), expected_res)
+        self.assertEqual(expected_res, res.getdist_all_list("brow", [1]))
         for t in [1, "", "ABC"]:
             for u in ["abc", [], ["a"], 0]:
                 try:

@@ -15,7 +15,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = ["bloc"]
-        self.assertEqual(res.getwords_eq(4), expected_res)
+        self.assertEqual(expected_res, res.getwords_eq(4))
         for t in [0, ""]:
             try:
                 res.getwords_eq(t)
@@ -30,7 +30,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [3]
-        self.assertEqual(res.getlines_eq(4), expected_res)
+        self.assertEqual(expected_res, res.getlines_eq(4))
         for t in [0, ""]:
             try:
                 res.getlines_eq(t)
@@ -45,7 +45,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = ["blo"]
-        self.assertEqual(res.getwords_lt(4), expected_res)
+        self.assertEqual(expected_res, res.getwords_lt(4))
         for t in [0, ""]:
             try:
                 res.getwords_eq(t)
@@ -60,7 +60,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [4]
-        self.assertEqual(res.getlines_lt(4), expected_res)
+        self.assertEqual(expected_res, res.getlines_lt(4))
         for t in [0, ""]:
             try:
                 res.getlines_lt(t)
@@ -75,7 +75,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = ["block", "blocks"]
-        self.assertEqual(res.getwords_gt(4), expected_res)
+        self.assertEqual(expected_res, res.getwords_gt(4))
         for t in [0, ""]:
             try:
                 res.getwords_gt(t)
@@ -90,7 +90,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [2, 1]
-        self.assertEqual(res.getlines_gt(4), expected_res)
+        self.assertEqual(expected_res, res.getlines_gt(4))
         for t in [0, ""]:
             try:
                 res.getlines_gt(t)
@@ -105,7 +105,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = ["blo", "blocks"]
-        self.assertEqual(res.getwords_list([3, 6]), expected_res)
+        self.assertEqual(expected_res, res.getwords_list([3, 6]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.getwords_list(t)
@@ -120,7 +120,7 @@ class TestMaxLengthResult(TestCase):
         except ValidationFailed as e:
             res = e.status_obj
         expected_res = [4, 1]
-        self.assertEqual(res.getlines_list([3, 6]), expected_res)
+        self.assertEqual(expected_res, res.getlines_list([3, 6]))
         for t in ["abc", [], ["a"], 0]:
             try:
                 res.getlines_list(t)

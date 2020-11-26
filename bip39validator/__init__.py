@@ -55,8 +55,7 @@ from .LevDistResult import LevDistResult
 from .InitUniqResult import InitUniqResult
 from .MaxLengthResult import MaxLengthResult
 from .BIP39WordList import BIP39WordList
-from .__main__ import main
 
-__all__ = ['main', 'InvalidRemoteContent', 'InvalidWordList', 'ValidWordList',
+__all__ = ['InvalidRemoteContent', 'InvalidWordList', 'ValidWordList',
            'ValidationFailed', 'LevDistResult', 'InitUniqResult', 'MaxLengthResult',
            'BIP39WordList']
