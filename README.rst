@@ -60,7 +60,9 @@ sound too similar" or "Wordlists cannot contain words from any other languages'
 wordslists". There is also no support for wordlists in non-Latin languages such
 as Arabic, Hebrew or CJK languages.
 
-.. _`best practices`: https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md
+
+.. _best practices: `https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md`
+
 .. end_long_description
 
 Installing
@@ -106,21 +108,23 @@ BIP39 Validator displays rich formatted status messages as it progresses with va
 however it is also possible to run BIP39 Validator with minimum diagnostic messages, or
 to log status messages to a file. The complete list of command-line arguments is below:
 
-- -d, --min-levenshtein-distance    set the minimum required Levenshtein distance between
+=====                               =====
+Option                              Description
+=====                               =====
+-d, --min-levenshtein-distance      set the minimum required Levenshtein distance between
                                     words (default: 2)
-- -u, --min-initial-unique          set the minimum required unique initial characters
+-u, --min-initial-unique            set the minimum required unique initial characters
                                     between words (default: 4)
-- -l, --max-length                  set the maximum length of each word (default: 8)
-- -D, --no-levenshtein-distance     do not run the Levenshtein distance test
-- -U, --no-initial-unique           do not run the unique initial characters test
-- -L, --no-max-length               do not run the maximum length test
-- -o <FILE>, --output-file <FILE>   logs all console output to an additional file
-- -a, --ascii                       turn off rich text formatting and progress bars for
+-l, --max-length                    set the maximum length of each word (default: 8)
+-D, --no-levenshtein-distance       do not run the Levenshtein distance test
+-U, --no-initial-unique             do not run the unique initial characters test
+-L, --no-max-length                 do not run the maximum length test
+-o <FILE>, --output-file <FILE>     logs all console output to an additional file
+-a, --ascii                         turn off rich text formatting and progress bars for
                                     console output
-- -q, --quiet                       do not display details of test failures, only whether
+-q, --quiet                         do not display details of test failures, only whether
                                     they succeeded or failed
-- -d, --debug                       turn on debugging mode (intended for developers)
-- -v, --version                     print the version number and exit
+-v, --version                       print the version number and exit
 
 BIP39 Validator displays which validation tests succeeded and the total number of tests
 that succeeded.

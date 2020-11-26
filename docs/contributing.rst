@@ -5,7 +5,7 @@
 Debugging Tips
 ----------------------------------------------------------------------------------------
 
-The ``--debug`` option enables a global exception catcher which invokes pdb when an
+The ``-d`` or ``--debug`` option enables a global exception catcher which invokes pdb when an
 exception is about to break out of `main()` for post-mortem debugging. This is an
 advanced feature intended for developers only, and you need to be familiar with pdb
 commands in order to use this feature effectively. This blog post "`Pdb debugging tips <https://dev.to/zenulabidin/pdb-debugging-tips-2ki7>`_"
