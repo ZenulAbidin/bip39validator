@@ -1,8 +1,14 @@
 from setuptools import setup, find_namespace_packages
+import os.path
+
+with open(os.path.join('.', 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='bip39validator',
-    version='1.0.2',
+    version='1.0.3',
+    long_description=long_description,
+    long_description_content_type='text/x-rst',
     packages=find_namespace_packages(where='.'),
     package_dir={'bip39validator': 'bip39validator'},
     url='https://github.com/ZenulAbidin/bip39validator',
