@@ -60,14 +60,6 @@ sound too similar" or "Wordlists cannot contain words from any other languages'
 wordslists". There is also no support for wordlists in non-Latin languages such
 as Arabic, Hebrew or CJK languages.
 
-BIP39 Validator has dependencies on the following modules:
-
-.. _Jellyfish: https://pypi.org/project/jellyfish/ (For computing Levenshtein distances)
-.. _Requests: https://pypi.org/project/requests/ (For reading wordlists from a URL)
-
-BIP39 Validator runs on Python 3.5 or higher, because that is what the dependencies
-require to run.
-
 .. _`best practices`: https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md
 .. end_long_description
 
