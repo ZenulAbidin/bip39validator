@@ -39,19 +39,19 @@ API Reference
 
 .. module:: bip39validator
 
-.. automodule:: bip39validator.BIP39WordList
+.. autoclass:: bip39validator.BIP39WordList
    :members:
 
 .. automodule:: bip39validator.ValidWordList
    :members:
 
-.. automodule:: bip39validator.LevDistResult
+.. autoclass:: bip39validator.LevDistResult
    :members:
 
-.. automodule:: bip39validator.InitUniqResult
+.. autoclass:: bip39validator.InitUniqResult
    :members:
 
-.. automodule:: bip39validator.MaxLengthResult
+.. autoclass:: bip39validator.MaxLengthResult
    :members:
 
 Exceptions

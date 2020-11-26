@@ -11,27 +11,6 @@ class LevDistResult:
     """Test conducted with a minimum Levenshtien distance of ``threshold``."""
     threshold = None
 
-    """Array of tuples containing exactly two words the
-  Levenshtein distance was computed bewteen
-  """
-    word_pairs = []
-
-    """Array of tuples containing exactly two line numbers
-  corresponding to each word of ``word_pairs``
-  """
-    line_pairs = []
-
-    """Array of tuples containing exactly two indices
-  that reference the corresponding ``word_pairs`` and
-  ``line_pairs``
-  """
-    index_pairs = []
-
-    """Array of Levenshtien distance integers for each
-  index, word and line pair
-  """
-    dists = []
-
     def __init__(self, res, words_sorted, lines_sorted, threshold):
         lev, split = res
         self.split = split
@@ -48,14 +27,13 @@ class LevDistResult:
     def _line_pair(self, first, second):
         return (self.lines_sorted[first], self.lines_sorted[second])
 
-    """Gets the word pairs which have a Levenshtein distance of ``dist``
+    def getwordpairs_eq(self, dist=None):
+        """Gets the word pairs which have a Levenshtein distance of ``dist``
 
   :param dist: Levenshtein distance
   :type dist: int
   :returns: a list of word pairs
   """
-
-    def getwordpairs_eq(self, dist=None):
         if not dist:
             dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
@@ -71,15 +49,15 @@ class LevDistResult:
             if dist_split == dist:
                 pairs.append(self._word_pair(first, second))
         return pairs
-
-    """Gets the line numbers of pairs which have a Levenshtein distance of ``dist``
-
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: a list of line pairs
-  """
 
     def getlinepairs_eq(self, dist=None):
+        """Gets the line numbers of pairs which have a Levenshtein distance of ``dist``
+
+          :param dist: Levenshtein distance
+          :type dist: int
+          :returns: a list of line pairs
+          """
+
         if not dist:
             dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
@@ -96,14 +74,14 @@ class LevDistResult:
                 pairs.append(self._line_pair(first, second))
         return pairs
 
-    """Gets the word pairs which have a Levenshtein distance less than ``dist``
-
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: a list of word pairs
-  """
-
     def getwordpairs_lt(self, dist=None):
+        """Gets the word pairs which have a Levenshtein distance less than ``dist``
+
+          :param dist: Levenshtein distance
+          :type dist: int
+          :returns: a list of word pairs
+          """
+
         if not dist:
             dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
@@ -119,15 +97,15 @@ class LevDistResult:
             if dist_split < dist:
                 pairs.append(self._word_pair(first, second))
         return pairs
-
-    """Gets the line numbers of pairs which have a Levenshtein distance less than ``dist``
-
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: a list of line number pairs
-  """
 
     def getlinepairs_lt(self, dist=None):
+        """Gets the line numbers of pairs which have a Levenshtein distance less than ``dist``
+
+          :param dist: Levenshtein distance
+          :type dist: int
+          :returns: a list of line number pairs
+          """
+
         if not dist:
             dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
@@ -144,13 +122,13 @@ class LevDistResult:
                 pairs.append(self._line_pair(first, second))
         return pairs
 
-    """Gets the word pairs which have a Levenshtein distance greater than ``dist``
+    def getwordpairs_gt(self, dist=None):
+        """Gets the word pairs which have a Levenshtein distance greater than ``dist``
 
   :param dist: Levenshtein distance
   :type dist: int
   :returns: a list of word pairs"""
 
-    def getwordpairs_gt(self, dist=None):
         if not dist:
             dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
@@ -166,14 +144,14 @@ class LevDistResult:
             if dist_split > dist:
                 pairs.append(self._word_pair(first, second))
         return pairs
-
-    """Gets the line numbers of pairs which have a Levenshtein distance greater than ``dist``
-
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: a list of line number pairs"""
 
     def getlinepairs_gt(self, dist=None):
+        """Gets the line numbers of pairs which have a Levenshtein distance greater than ``dist``
+
+  :param dist: Levenshtein distance
+  :type dist: int
+  :returns: a list of line number pairs"""
+
         if not dist:
             dist = self.threshold
         assert type(dist) == int, 'Invalid type "{}" for argument `dist` (expected "int")' \
@@ -190,13 +168,13 @@ class LevDistResult:
                 pairs.append(self._line_pair(first, second))
         return pairs
 
-    """Gets the word pairs which have a Levenshtein distance inside the list ``dists``
-
-  :param dists: list of Levenshtein distances
-  :type dists: list
-  :returns: a list of word pairs"""
 
     def getwordpairs_list(self, dists):
+        """Gets the word pairs which have a Levenshtein distance inside the list ``dists``
+
+      :param dists: list of Levenshtein distances
+      :type dists: list
+      :returns: a list of word pairs"""
         assert type(dists) == list, 'Invalid type "{}" for argument `dists` (expected "list")' \
             .format(type(dists).__name__)
         assert len(dists) > 0, "Cannot use empty list as list of dists"
@@ -216,13 +194,12 @@ class LevDistResult:
                 pairs.append(self._word_pair(first, second))
         return pairs
 
-    """Gets the line numbers of pairs which have a Levenshtein distance inside the list ``dists``
-
-  :param dists: list of Levenshtein distances
-  :type dists: list
-  :returns: a list of line number pairs"""
-
     def getlinepairs_list(self, dists):
+        """Gets the line numbers of pairs which have a Levenshtein distance inside the list ``dists``
+
+      :param dists: list of Levenshtein distances
+      :type dists: list
+      :returns: a list of line number pairs"""
         assert type(dists) == list, 'Invalid type "{}" for argument `dists` (expected "list")' \
             .format(type(dists).__name__)
         assert len(dists) > 0, "Cannot use empty list as list of dists"
@@ -242,15 +219,14 @@ class LevDistResult:
                 pairs.append(self._line_pair(first, second))
         return pairs
 
-    """Gets Levenshtein distance between ``word1`` and ``word2``
-
-  :param word1: first word
-  :type word1: str
-  :param word2: second word
-  :type word2: str
-  :returns: Levenshtein distance between ``word1`` and ``word2``"""
-
     def getdist(self, word1, word2):
+        """Gets Levenshtein distance between ``word1`` and ``word2``
+
+      :param word1: first word
+      :type word1: str
+      :param word2: second word
+      :type word2: str
+      :returns: Levenshtein distance between ``word1`` and ``word2``"""
         assert type(word1) == str, 'Invalid type "{}" for argument `word1` (expected "str")' \
             .format(type(word1).__name__)
         assert len(word1) > 0, "Cannot use empty string as word"
@@ -283,13 +259,13 @@ class LevDistResult:
         else:
             return dist
 
-    """Gets Levenshtein distance between `word` and all other words
+
+    def getdist_all(self, word):
+        """Gets Levenshtein distance between `word` and all other words
 
   :param word: the word
   :type word: str
   :returns: list of Levenshtein distances between ``word`` and each word"""
-
-    def getdist_all(self, word):
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
             .format(type(word).__name__)
         assert len(word) > 0, "Cannot use empty string as word"
@@ -316,15 +292,14 @@ class LevDistResult:
         else:
             return dist_all
 
-    """Gets Levenshtein distance between ``word`` and all other words, equal to ``dist``
-
-  :param word: the word
-  :type word: str
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: list of Levenshtein distances between ``word`` and each word"""
-
     def getdist_all_eq(self, word, dist=None):
+        """Gets Levenshtein distance between ``word`` and all other words, equal to ``dist``
+
+      :param word: the word
+      :type word: str
+      :param dist: Levenshtein distance
+      :type dist: int
+      :returns: list of Levenshtein distances between ``word`` and each word"""
         if not dist:
             dist = self.threshold
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
@@ -358,15 +333,14 @@ class LevDistResult:
         else:
             return dist_all
 
-    """Gets Levenshtein distance between ``word`` and all other words, less than ``dist``
-
-  :param word: the word
-  :type word: str
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: list of Levenshtein distances between ``word`` and each word"""
-
     def getdist_all_lt(self, word, dist=None):
+        """Gets Levenshtein distance between ``word`` and all other words, less than ``dist``
+
+          :param word: the word
+          :type word: str
+          :param dist: Levenshtein distance
+          :type dist: int
+          :returns: list of Levenshtein distances between ``word`` and each word"""
         if not dist:
             dist = self.threshold
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
@@ -400,15 +374,14 @@ class LevDistResult:
         else:
             return dist_all
 
-    """Gets Levenshtein distance between ``word`` and all other words, greater than ``dist``
-
-  :param word: the word
-  :type word: str
-  :param dist: Levenshtein distance
-  :type dist: int
-  :returns: list of Levenshtein distances between ``word`` and each word"""
-
     def getdist_all_gt(self, word, dist=None):
+        """Gets Levenshtein distance between ``word`` and all other words, greater than ``dist``
+
+          :param word: the word
+          :type word: str
+          :param dist: Levenshtein distance
+          :type dist: int
+          :returns: list of Levenshtein distances between ``word`` and each word"""
         if not dist:
             dist = self.threshold
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
@@ -442,15 +415,14 @@ class LevDistResult:
         else:
             return dist_all
 
-    """Gets Levenshtein distance between ``word`` and all other words, inside the list ``dists``
-
-  :param word: the word
-  :type word: str
-  :param dists: list of Levenshtein distances
-  :type dists: list
-  :returns: list of Levenshtein distances between ``word`` and each word"""
-
     def getdist_all_list(self, word, dists):
+        """Gets Levenshtein distance between ``word`` and all other words, inside the list ``dists``
+
+          :param word: the word
+          :type word: str
+          :param dists: list of Levenshtein distances
+          :type dists: list
+          :returns: list of Levenshtein distances between ``word`` and each word"""
         assert type(word) == str, 'Invalid type "{}" for argument `word` (expected "str")' \
             .format(type(word).__name__)
         assert len(word) > 0, "Cannot use empty string as word"

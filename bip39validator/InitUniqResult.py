@@ -13,20 +13,17 @@ class InitUniqResult:
 
     regrouped_n = None
 
-    """Array of 2-tuples containing start and end indices
-  of a block of non-unique words.
-  """
+    # Array of 2-tuples containing start and end indices
+    # of a block of non-unique words
     word_pairs = []
 
-    """Array of tuples containing exactly two line numbers
-  corresponding to each word of ``word_pairs``
-  """
+    # Array of tuples containing exactly two line numbers
+    # corresponding to each word of ``word_pairs``
     line_pairs = []
 
-    """Array of tuples containing exactly two indices
-  that reference the corresponding ``word_pairs`` and
-  ``line_pairs``
-  """
+    # Array of tuples containing exactly two indices
+    # that reference the corresponding ``word_pairs`` and
+    # ``line_pairs``
     index_pairs = []
 
     def __init__(self, res, threshold):
@@ -36,18 +33,15 @@ class InitUniqResult:
         self.lines = res['lines']
         self.threshold = threshold
 
-
-
-    """Gets the list of words and lines beginning with ``prefix``
-        
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the words and
-  lines in the returned tuple array are sorted in alphabetic order.
-
-  :param prefix: the prefix
-  :type prefix: str
-  :returns: list of (word, line) tuples beginning with ``prefix``"""
-
     def similargroup(self, prefix):
+        """Gets the list of words and lines beginning with ``prefix``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the words and
+          lines in the returned tuple array are sorted in alphabetic order.
+
+          :param prefix: the prefix
+          :type prefix: str
+          :returns: list of (word, line) tuples beginning with ``prefix``"""
         assert type(prefix) == str, 'Invalid type "{}" for argument `prefix` (expected "str")' \
             .format(type(prefix).__name__)
         assert len(prefix) > 0, "Cannot use empty string as prefix"
@@ -59,16 +53,15 @@ class InitUniqResult:
         except KeyError as e:
             return []
 
-    """Gets the list of words beginning with ``prefix``
-
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the words in the
-  returned list are sorted in alphabetic order.
-  
-  :param prefix: the prefix
-  :type prefix: str
-  :returns: list of words beginning with ``prefix``"""
-
     def similar_wordgroup(self, prefix):
+        """Gets the list of words beginning with ``prefix``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the words in the
+          returned list are sorted in alphabetic order.
+
+          :param prefix: the prefix
+          :type prefix: str
+          :returns: list of words beginning with ``prefix``"""
         assert type(prefix) == str, 'Invalid type "{}" for argument `prefix` (expected "str")' \
             .format(type(prefix).__name__)
         assert len(prefix) > 0, "Cannot use empty string as prefix"
@@ -80,16 +73,15 @@ class InitUniqResult:
         except KeyError as e:
             return []
 
-    """Gets the list of lines of words beginning with ``prefix``
-
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the lines in the
-  returned list are sorted in alphabetic order.
-  
-  :param prefix: the prefix
-  :type prefix: str
-  :returns: list of line numbers of words beginning with ``prefix``"""
-
     def similar_linegroup(self, prefix):
+        """Gets the list of lines of words beginning with ``prefix``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the lines in the
+          returned list are sorted in alphabetic order.
+
+          :param prefix: the prefix
+          :type prefix: str
+          :returns: list of line numbers of words beginning with ``prefix``"""
         assert type(prefix) == str, 'Invalid type "{}" for argument `prefix` (expected "str")' \
             .format(type(prefix).__name__)
         assert len(prefix) > 0, "Cannot use empty string as prefix"
@@ -101,16 +93,15 @@ class InitUniqResult:
         except KeyError as e:
             return []
 
-    """Gets the list of words and lines beginning with any of the prefixes in ``prefixes``
-
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the words and
-  lines in the returned tuple array are sorted in alphabetic order.
-
-  :param prefixes: list of prefixes
-  :type prefixes: str
-  :returns: list of (word, line) tuples beginning with any of the ``prefixes``"""
-
     def similargroup_many(self, prefixes):
+        """Gets the list of words and lines beginning with any of the prefixes in ``prefixes``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the words and
+          lines in the returned tuple array are sorted in alphabetic order.
+
+          :param prefixes: list of prefixes
+          :type prefixes: str
+          :returns: list of (word, line) tuples beginning with any of the ``prefixes``"""
         assert type(prefixes) == list, 'Invalid type "{}" for argument `prefixes` (expected "list")' \
             .format(type(prefixes).__name__)
         assert len(prefixes) > 0, "Cannot use empty list as list of prefixes"
@@ -129,16 +120,15 @@ class InitUniqResult:
                 pass
         return groups
 
-    """Gets the list of words beginning with any of the prefixes in ``prefixes``
-
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the words in the
-  returned list are sorted in alphabetic order.
-  
-  :param prefixes: list of prefixes
-  :type prefixes: str
-  :returns: list of words beginning with any of the ``prefixes``"""
-
     def similar_wordgroup_many(self, prefixes):
+        """Gets the list of words beginning with any of the prefixes in ``prefixes``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the words in the
+          returned list are sorted in alphabetic order.
+
+          :param prefixes: list of prefixes
+          :type prefixes: str
+          :returns: list of words beginning with any of the ``prefixes``"""
         assert type(prefixes) == list, 'Invalid type "{}" for argument `prefixes` (expected "list")' \
             .format(type(prefixes).__name__)
         assert len(prefixes) > 0, "Cannot use empty list as list of prefixes"
@@ -157,17 +147,15 @@ class InitUniqResult:
                 pass
         return groups
 
-
-    """Gets the list of lines of words beginning with any of the prefixes in ``prefixes``
-
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the lines in the
-  returned list are sorted in alphabetic order.
-  
-  :param prefixes: list of prefixes
-  :type prefixes: str
-  :returns: list of lines of words beginning with any of the ``prefixes``"""
-
     def similar_linegroup_many(self, prefixes):
+        """Gets the list of lines of words beginning with any of the prefixes in ``prefixes``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the lines in the
+          returned list are sorted in alphabetic order.
+
+          :param prefixes: list of prefixes
+          :type prefixes: str
+          :returns: list of lines of words beginning with any of the ``prefixes``"""
         assert type(prefixes) == list, 'Invalid type "{}" for argument `prefixes` (expected "list")' \
             .format(type(prefixes).__name__)
         assert len(prefixes) > 0, "Cannot use empty list as list of prefixes"
@@ -186,13 +174,12 @@ class InitUniqResult:
                 pass
         return groups
 
-    """Gets the entire hash table of words and lines grouped by all prefixes of length ``n``
-
-  :param n: prefix length to group by
-  :type n: int
-  :returns: dictionary of (word, line) tuples grouped by length ``n`` prefixes"""
-
     def similargroup_all(self, n):
+        """Gets the entire hash table of words and lines grouped by all prefixes of length ``n``
+
+          :param n: prefix length to group by
+          :type n: int
+          :returns: dictionary of (word, line) tuples grouped by length ``n`` prefixes"""
         if not n:
             n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
@@ -202,16 +189,15 @@ class InitUniqResult:
         prefix_list = regroup_prefix(self.words, self.lines, n)
         return prefix_list
 
-    """Gets the entire hash table of words grouped by all prefixes of length ``n``
-
-  As ``BIP39WordList`` sorts its internal copy of the wordlist, the words and
-  lines in the returned tuple array are sorted in alphabetic order.
-
-  :param n: prefix length to group by
-  :type n: int
-  :returns: dictionary of words grouped by length ``n`` prefixes"""
-
     def similar_wordgroup_all(self, n):
+        """Gets the entire hash table of words grouped by all prefixes of length ``n``
+
+          As ``BIP39WordList`` sorts its internal copy of the wordlist, the words and
+          lines in the returned tuple array are sorted in alphabetic order.
+
+          :param n: prefix length to group by
+          :type n: int
+          :returns: dictionary of words grouped by length ``n`` prefixes"""
         if not n:
             n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
@@ -220,13 +206,12 @@ class InitUniqResult:
 
         return {k: [a[0] for a in v] for k, v in self.similargroup_all(n).items()}
 
-    """Gets the entire hash table of lines of words grouped by all prefixes of length ``n``
-
-  :param n: prefix length to group by
-  :type n: int
-  :returns: dictionary of lines of words grouped by length ``n`` prefixes"""
-
     def similar_linegroup_all(self, n):
+        """Gets the entire hash table of lines of words grouped by all prefixes of length ``n``
+
+          :param n: prefix length to group by
+          :type n: int
+          :returns: dictionary of lines of words grouped by length ``n`` prefixes"""
         if not n:
             n = self.threshold
         assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
