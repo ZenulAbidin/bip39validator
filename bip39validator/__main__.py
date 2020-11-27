@@ -201,7 +201,7 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                     logerror("")
                 logerror("{} total words below minimum Levenshtein distance".format(len(
                     word_pairs)))
-            logerror("Levenshtein distance test failed")
+                logerror("Levenshtein distance test failed")
 
             logdefault("Finished performing Levenshtein distance test")
             separator()
@@ -230,7 +230,7 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                         logerror("    \"{}\" (line {})".format(wordline[0], wordline[1]))
                     logerror("")
                 logerror("{} total similar words".format(len(groups.keys())))
-            logerror("Unique initial characters test failed")
+                logerror("Unique initial characters test failed")
         logdefault("Finished unique initial characters test")
         separator()
 
@@ -254,7 +254,7 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                     logerror("    \"{}\" (line {})".format(word, line))
                 logerror("{} words longer than {} characters".format(len(lengths),
                                                                      args.max_length))
-            logerror("Maximum word length test failed")
+                logerror("Maximum word length test failed")
         logdefault("Finished maximum word length test")
         separator()
 
