@@ -47,6 +47,8 @@ Written by Ali Sherief.""".format(__version__)
 
 
 def abort(debug):
+    if log_file:
+        log_file.close()
     if debug:
         logerror("Debug mode on, entering pdb")
         pdb.set_trace()
@@ -55,12 +57,11 @@ def abort(debug):
         logerror("Aborting")
         exit(1)
 
-
 log_file = None
 args = None
 
-
 def main():
+    log_file = None
     try:
         parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
                                          description='BIP39 wordlist validator')
@@ -103,8 +104,9 @@ def main():
         if args.output:
             try:
                 absout = abspath(args.output)
-                if not args.quiet:
-                    logdefault("Attempting to open log file {} for writing".format(absout))
+                # Set the ascii flag if desired before printing this
+                setargs(None, args)
+                logdefault("Attempting to open log file {} for writing".format(absout))
                 log_file = open(absout, 'w')
                 setargs(log_file, args)
             except OSError as e:
@@ -129,12 +131,9 @@ def main():
             abort(args.debug)
 
         try:
-            if not args.quiet:
-                logdefault("Reading wordlist file {}".format(args.input))
+            logdefault("Reading wordlist file {}".format(args.input))
             with open(args.input) as f:
                 bip39 = BIP39WordList(desc=f"{args.input}", handle=f)
-                # word_line_arr = to_wordline_array(contents2list(s))
-                # loginfo("{} words read".format(len(word_line_arr.word_list))
                 loginfo("{} words read".format(len(bip39)))
         except OSError as e:
             logerror("Cannot read {}: {}".format(e.filename,
@@ -142,13 +141,14 @@ def main():
             abort(args.debug)
 
         tally = 0
-        total = 4
+        total = 4 - int(args.no_lev_dist) - int(args.no_init_uniq)\
+                - int(args.no_max_length)
 
         def check_validity_warnings(validity):
-            if not validity.is_sorted and not args.quiet:
+            if not validity.is_sorted:
                 logwarning('Wordlist is not sorted. It is recommended to sort the wordlist \
   before publishing it.')
-            if not validity.has_2048_words and not args.quiet:
+            if not validity.has_2048_words:
                 logwarning('Wordlist has {} words. Exactly 2048 words are needed to map \
   each word to an 11-bit value 1-to-1.'.format(validity.num_words))
 
@@ -182,28 +182,26 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                 kwargs = progressbar('Computing Levenshtein distance', tup[0],
                                      tup[1], tup[2], **kwargs)
                 bip39._test_lev_distance_2(kwargs)
-                if not args.quiet:
-                    loginfo("No word pairs with Levenshtein distance less than {}" \
+                loginfo("No word pairs with Levenshtein distance less than {}" \
                             .format(args.lev_dist))
                 tally += 1
                 loginfo("Levenshtein distance test succeeded")
             except ValidationFailed as e:
-                if not args.quiet:
-                    lev_dist = e.status_obj
-                    word_pairs = lev_dist.getwordpairs_lt()
-                    logerror("{} word pairs with Levenshtein distance less than {}\n" \
+                lev_dist = e.status_obj
+                word_pairs = lev_dist.getwordpairs_lt()
+                logerror("{} word pairs with Levenshtein distance less than {}\n" \
                              .format(len(word_pairs), args.lev_dist))
-                    for i in range(1, args.lev_dist):
-                        words_list = [*zip(lev_dist.getwordpairs_eq(i), lev_dist.getlinepairs_eq(i))]
-                        logerror("{} word pairs with Levenshtein distance *equal* to {}:" \
+                for i in range(1, args.lev_dist):
+                    words_list = [*zip(lev_dist.getwordpairs_eq(i), lev_dist.getlinepairs_eq(i))]
+                    logerror("{} word pairs with Levenshtein distance *equal* to {}:" \
                                  .format(len(words_list), i))
-                        for words, lines in words_list:
-                            logerror("    \"{}\" (line {}) <--> \"{}\" (line {})" \
+                    for words, lines in words_list:
+                        logerror("    \"{}\" (line {}) <--> \"{}\" (line {})" \
                                     .format(words[0], lines[0], words[1], lines[1]))
-                        logerror("")
-                    logerror("{} total words below minimum Levenshtein distance".format(len(
-                        word_pairs)))
-                logerror("Levenshtein distance test failed")
+                    logerror("")
+                logerror("{} total words below minimum Levenshtein distance".format(len(
+                    word_pairs)))
+            logerror("Levenshtein distance test failed")
 
             logdefault("Finished performing Levenshtein distance test")
             separator()
@@ -220,22 +218,21 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                 tally += 1
                 loginfo("Unique initial characters test succeeded")
             except ValidationFailed as e:
-                if not args.quiet:
-                    similar = e.status_obj
-                    # Filter out groups with just one word in them as those are unique
-                    groups = {k: v for (k, v) in similar.similargroup_all().items() if
+                similar = e.status_obj
+                # Filter out groups with just one word in them as those are unique
+                groups = {k: v for (k, v) in similar.similargroup_all(args.init_uniq).items() if
                               len(v) > 1}
-                    logerror("{} groups of similar words (by {} initial characters)\n" \
+                logerror("{} groups of similar words (by {} initial characters)\n" \
                              .format(len(groups.items()), args.init_uniq))
-                    for pre, group in groups:
-                        logerror("Similar words with prefix \"{}\":").format(pre)
-                        for wordline in group:
-                            logerror("    \"{}\" (line {})".format(wordline[0], wordline[1]))
-                        logerror("")
-                    logerror("{} total similar words".format(len(groups.keys())))
-                logerror("Unique initial characters test failed")
-            logdefault("Finished unique initial characters test")
-            separator()
+                for pre, group in groups.items():
+                    logerror("Similar words with prefix \"{}\":".format(pre))
+                    for wordline in group:
+                        logerror("    \"{}\" (line {})".format(wordline[0], wordline[1]))
+                    logerror("")
+                logerror("{} total similar words".format(len(groups.keys())))
+            logerror("Unique initial characters test failed")
+        logdefault("Finished unique initial characters test")
+        separator()
 
         if not args.no_max_length:
             logdefault("Performing maximum word length test")
@@ -249,20 +246,21 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                 tally += 1
                 loginfo("Maximum word length test succeeded")
             except ValidationFailed as e:
-                if not args.quiet:
-                    lengths = e.status_obj
-                    words = lengths.getwords_gt()
-                    lines = lengths.getlines_gt()
-                    logerror("Words longer than {} characters:".format(args.max_length))
-                    for word, line in [*zip(words, lines)]:
-                        logerror("    \"{}\" (line {})", word, line)
-                    logerror("{} words longer than {} characters".format(len(lengths),
-                                                                         args.max_length))
-                logerror("Maximum word length test failed")
-            logdefault("Finished maximum word length test")
-            separator()
+                lengths = e.status_obj
+                words = lengths.getwords_gt(args.max_length)
+                lines = lengths.getlines_gt(args.max_length)
+                logerror("Words longer than {} characters:".format(args.max_length))
+                for word, line in [*zip(words, lines)]:
+                    logerror("    \"{}\" (line {})".format(word, line))
+                logerror("{} words longer than {} characters".format(len(lengths),
+                                                                     args.max_length))
+            logerror("Maximum word length test failed")
+        logdefault("Finished maximum word length test")
+        separator()
 
-        logdefault("{} of {} test_vectors passed".format(tally, total))
+        logdefault("{} of {} checks passed".format(tally, total))
+        if log_file:
+            log_file.close()
         exit(0)
     except Exception as e:
         print("Got unknown exception {}: {}".format(type(e), str(e)))

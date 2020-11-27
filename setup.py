@@ -1,4 +1,4 @@
-from setuptools import setup, find_namespace_packages
+from setuptools import setup, find_packages
 import os.path
 
 with open(os.path.join('.', 'README.rst'), encoding='utf-8') as f:
@@ -6,10 +6,10 @@ with open(os.path.join('.', 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='bip39validator',
-    version='1.0.3',
+    version='1.0.4',
     long_description=long_description,
     long_description_content_type='text/x-rst',
-    packages=find_namespace_packages(where='.'),
+    packages=find_packages(),
     package_dir={'bip39validator': 'bip39validator'},
     url='https://github.com/ZenulAbidin/bip39validator',
     license='MIT',

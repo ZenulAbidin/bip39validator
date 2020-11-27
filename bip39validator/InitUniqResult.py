@@ -33,6 +33,10 @@ class InitUniqResult:
         self.lines = res['lines']
         self.threshold = threshold
 
+    def __len__(self):
+        prefix_list = regroup_prefix(self.words, self.lines, self.threshold)
+        return len(prefix_list)  # number of groups
+
     def similargroup(self, prefix):
         """Gets the list of words and lines beginning with ``prefix``
 

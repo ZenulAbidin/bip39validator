@@ -26,6 +26,9 @@ class MaxLengthResult:
         self.words = [a for a in words_sorted]
         self.lines = [a for a in lines_sorted]
 
+    def __len__(self):
+        return len(self.words_long)
+
     def getwords_long(self):
         """Gets the words that are longer than the threshold tested against.
 

@@ -18,6 +18,9 @@ class LevDistResult:
         self.lines_sorted = lines_sorted
         self.threshold = threshold
 
+    def __len__(self):
+        return len(self.split)
+
     def _index_pair(self, first, second):
         return (first, second)
 

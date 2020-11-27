@@ -24,86 +24,100 @@ from rich.console import Console
 from rich.markdown import Markdown
 from rich.progress import track
 
+class ParamsInternal:
+    def __init__(self, ascii, log_file, quiet):
+        self.ascii = ascii
+        self.log_file = log_file
+        self.quiet = quiet
 
 # These functions are not intended for use outside the main program.
 
 # Utility function to print an error message
 def logerror(*args):
-    if not ascii:
-        error_console.print(*["[bold red]ERROR: [/bold red]" + s for s in args])
-    else:
-        print(*["ERROR: " + s for s in args], sep="\n", file=sys.stderr)
+    if not params.quiet:
+        if not params.ascii:
+            error_console.print(*["[bold red]ERROR: [/bold red]" + s for s in args])
+        else:
+            print(*["ERROR: " + s for s in args], sep="\n", file=sys.stderr)
 
-    if log_file:
-        print(*["ERROR: " + s for s in args], sep="\n", file=log_file)
+    if params.log_file:
+        params.log_file.write("\n".join(["ERROR: " + s for s in args])+"\n")
 
 
 # Utility function to print a warning message
 def logwarning(*args):
-    if not ascii:
-        error_console.print(*["[bold yellow]WARNING: [/bold yellow]" + s for s
-                              in args], sep="\n")
-    else:
-        print(*["WARNING: " + s for s in args], sep="\n", file=sys.stderr)
+    if not params.quiet:
+        if not params.ascii:
+            error_console.print(*["[bold yellow]WARNING: [/bold yellow]" + s for s
+                                  in args], sep="\n")
+        else:
+            print(*["WARNING: " + s for s in args], sep="\n", file=sys.stderr)
 
-    if log_file:
-        print(*["WARNING: " + s for s in args], sep="\n", file=log_file)
+    if params.log_file:
+        params.log_file.write("\n".join(["WARNING: " + s for s in args])+"\n")
 
 
 # Utility function to print an informational message
 def loginfo(*args):
-    if not ascii:
-        info_console.print(*["[green]INFO: [/green]" + s for s in args], sep="\n")
-    else:
-        print(*["INFO: " + s for s in args], sep="\n", file=sys.stdout)
+    if not params.quiet:
+        if not params.ascii:
+            info_console.print(*["[green]INFO: [/green]" + s for s in args], sep="\n")
+        else:
+            print(*["INFO: " + s for s in args], sep="\n", file=sys.stdout)
 
-    if log_file:
-        print(*["INFO: " + s for s in args], sep="\n", file=log_file)
+    if params.log_file:
+        params.log_file.write("\n".join(["INFO: " + s for s in args])+"\n")
 
 
 # Utility function to print a normal default message
 def logdefault(*args):
-    if not ascii:
-        info_console.print(*args, sep="\n")
-    else:
-        print(*args, sep="\n", file=sys.stdout)
+    if not params.quiet:
+        if not params.ascii:
+            info_console.print(*args, sep="\n")
+        else:
+            print(*args, sep="\n", file=sys.stdout)
 
-    if log_file:
-        print(*args, sep="\n", file=log_file)
-
+    if params.log_file:
+        params.log_file.write("\n".join(args)+"\n")
 
 # Utility function to print a progress bar that repeatedly calls a worker
 # function that takes it's own `kwargs` and returns its updated `kwargs` for
 # the next iteration.
 def progressbar(desc, low, high, func, **kwargs):
-    if not ascii:
-        for i in track(range(low, high), description=desc):
-            kwargs = func(i, **kwargs)
-        return kwargs
+    if not params.quiet:
+        if not params.ascii:
+            for i in track(range(low, high), description=desc):
+                kwargs = func(i, **kwargs)
+            return kwargs
+        else:
+            print(desc + ", please wait...")
+            for i in range(low, high):
+                kwargs = func(i, **kwargs)
+            return kwargs
     else:
-        print(desc + ", please wait...")
         for i in range(low, high):
             kwargs = func(i, **kwargs)
         return kwargs
 
 
 def separator():
-    if not ascii:
-        info_console.print(Markdown('---'))
-    else:
-        print("=" * 10, file=sys.stdout)
+    if not params.quiet:
+        if not params.ascii:
+            info_console.print(Markdown('---'))
+        else:
+            print("=" * 10, file=sys.stdout)
 
-    if log_file:
-        print("=" * 10, file=log_file)
+    if params.log_file:
+        params.log_file.write("=" * 10 + "\n")
 
-log_file = None
-ascii = False
+params = ParamsInternal(False, None, False)
 
 def setargs(log, args):
-    log_file = log
-    ascii = args.ascii
+    params.log_file = log
+    params.ascii = args.ascii
+    params.quiet = args.quiet
 
 
-if not ascii:
+if not params.ascii:
     error_console = Console(file=sys.stderr)
     info_console = Console(file=sys.stdout)
