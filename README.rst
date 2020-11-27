@@ -14,7 +14,7 @@ BIP39 Validator
     :target: https://pypi.org/project/bip39validator/
 
 .. |bitcointalk| image:: https://img.shields.io/badge/bitcointalk-thread-yellow
-   :target: https://bitcointalk.org/index.php
+   :target: https://bitcointalk.org/index.php?topic=5293662.0
    :alt: Bitcointalk thread
 
 .. image:: https://files.notatether.com/bip39validator.gif
