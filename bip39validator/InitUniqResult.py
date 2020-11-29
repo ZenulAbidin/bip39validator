@@ -223,3 +223,15 @@ class InitUniqResult:
         assert n > 0, 'Prefix length must be greater than 0'
 
         return {k: [a[1] for a in v] for k, v in self.similargroup_all(n).items()}
+
+    def groups_length(self, n):
+        """Gets the list of groups of words and lines of similar prefix length ``n``.
+
+          :param n: length of prefixes
+          :type n: int
+          :returns: dict of (word, line) tuples grouped by prefixes of length ``n``"""
+        assert type(n) == int, 'Invalid type "{}" for argument `n` (expected "int")' \
+            .format(type(n).__name__)
+        assert n > 0, 'Prefix length must be greater than 0'
+        return {k: v for (k, v) in self.similargroup_all(n).items() if
+                  len(v) > 1 and len(k) == n}

@@ -120,3 +120,15 @@ class TestInitUniqResult(TestCase):
                 self.fail()
             except AssertionError as e:
                 pass
+
+    def test_groups_length(self):
+        bip39 = BIP39WordList("inituniq_2group_l3", string=inituniq_2group_l3)
+        res = bip39.test_initial_chars(3)
+        expected_res = {"qu": [("quick", 1), ("quote", 2)]}
+        self.assertEqual(expected_res, res.groups_length(2))
+        for t in [0, ""]:
+            try:
+                res.similar_wordgroup_all(t)
+                self.fail()
+            except AssertionError as e:
+                pass
