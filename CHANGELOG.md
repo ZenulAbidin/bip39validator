@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2020-11-29
+### Added
+New method `InitUniqResult.groups_length(n)`
+
+### Changed
+- NFC normalization is now done on all words in wordlists after reading them
+
+### Fixed
+- `bip39validator` no longer printing erroneous test failures
+- GIF in README.rst shows the expected output for the `bip39validator` command
+- Plain text URLs as the first positional argument of `bip39validator` are now recognized, in addition to filenames
+- Diacritics removal being silently ignored, causing non-english wordlists to fail lowercase characters test
+
 ## [1.0.4] - 2020-11-27
 ### Fixed
 - Fixed some exceptions thrown when running the bip39validator main program.
@@ -41,7 +54,8 @@ Pre-release version of BIP39 Validator 1.0.0. Be warned that this is alpha-quali
 - Initial unique characters test implemented
 - Maximum length test implemented
 
-[Unreleased]: https://github.com/ZenulAbidin/bip39validator/compare/1.0.4...HEAD
+[Unreleased]: https://github.com/ZenulAbidin/bip39validator/compare/v1.0.5...HEAD
+[1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/v1.0.5
 [1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.4
 [1.0.3]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.3
 [1.0.2]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.2
