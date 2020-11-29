@@ -56,7 +56,7 @@ setup(
         #   ':python_version=="2.6"': ['argparse'],
     },
     setup_requires=[
-        'pytest-runner',
+        'jellyfish', 'rich', 'requests', 'validation',  'pytest-runner',
     ],
     entry_points={
         'console_scripts': [
