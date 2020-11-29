@@ -20,7 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-
+import unicodedata
 import unicodedata as ud
 from bip39validator.internal.data_structs import WordAndLineArray
 
@@ -46,6 +46,8 @@ def longestCommonPrefix(strs):
         current = temp
     return current
 
+def normalize_nfc(s):
+    return unicodedata.normalize("NFC", s)
 
 # Credits: https://stackoverflow.com/a/15547803/12452330
 def rmdiacritics(word):
@@ -103,9 +105,9 @@ def to_wordline_array(l):
 
 
 # Given the entirety of the file read as a string buffer `buf`, split it by
-# newlines into a list. Do not clean it up, do not remove whitespace in any way.
+# newlines into a list. Normalize and remove all diacritics.
 def contents2list(buf):
-    l = buf.split("\n")
+    l = [rmdiacritics(normalize_nfc(s)) for s in buf.split("\n")]
 
     # Remove extraneous empty element after the last newline if the file ends with
     # newline.
