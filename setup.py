@@ -1,12 +1,13 @@
 from setuptools import setup, find_packages
 import os.path
+from .bip39validator.__version__ import __version__
 
 with open(os.path.join('.', 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='bip39validator',
-    version='1.0.4',
+    version=__version__,
     long_description=long_description,
     long_description_content_type='text/x-rst',
     packages=find_packages(),
