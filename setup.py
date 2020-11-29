@@ -47,7 +47,7 @@ setup(
         # requests 2.20.1 fixes a security vulnerability
         # None of the pinned releases have bugs that affect operation of BIP39
         # Validator
-        'jellyfish>=0.7.1', 'rich>=4.2.1', 'requests>=2.20.1',
+        'jellyfish', 'rich', 'requests', 'validation'
     ],
     extras_require={
         # eg:

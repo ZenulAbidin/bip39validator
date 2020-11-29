@@ -23,6 +23,7 @@
 
 import argparse
 import pdb
+import validators
 from os.path import abspath
 from bip39validator.InvalidWordList import InvalidWordList
 from bip39validator.ValidationFailed import ValidationFailed
@@ -131,10 +132,18 @@ def main():
             abort(args.debug)
 
         try:
-            logdefault("Reading wordlist file {}".format(args.input))
-            with open(args.input) as f:
-                bip39 = BIP39WordList(desc=f"{args.input}", handle=f)
-                loginfo("{} words read".format(len(bip39)))
+            valid_url = validators.url(args.input)
+            if valid_url:
+                kwargs = {'url': args.input}
+                logdefault("Reading wordlist URL {}".format(args.input))
+            else:
+                f = open(args.input)
+                kwargs = {'handle': f}
+                logdefault("Reading wordlist file {}".format(args.input))
+            bip39 = BIP39WordList(desc=f"{args.input}", **kwargs)
+            loginfo("{} words read".format(len(bip39)))
+            if not valid_url:
+                f.close()
         except OSError as e:
             logerror("Cannot read {}: {}".format(e.filename,
                                                  e.strerror))
