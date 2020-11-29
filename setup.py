@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 import os.path
-from .bip39validator.__version__ import __version__
+from bip39validator.__version__ import __version__
 
 with open(os.path.join('.', 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
