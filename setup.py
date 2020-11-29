@@ -1,13 +1,16 @@
 from setuptools import setup, find_packages
 import os.path
-from bip39validator.__version__ import __version__
 
 with open(os.path.join('.', 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+version = {}
+with open(os.path.join('.', 'bip39validator', '__version__.py')) as g:
+    exec(g.read(), version)
+
 setup(
     name='bip39validator',
-    version=__version__,
+    version=version,
     long_description=long_description,
     long_description_content_type='text/x-rst',
     packages=find_packages(),
@@ -56,7 +59,7 @@ setup(
         #   ':python_version=="2.6"': ['argparse'],
     },
     setup_requires=[
-        'jellyfish', 'rich', 'requests', 'validation',  'pytest-runner',
+        'pytest-runner',
     ],
     entry_points={
         'console_scripts': [
