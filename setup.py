@@ -33,7 +33,7 @@ setup(
         'Topic :: Software Development :: Testing',
     ],
     project_urls={
-        'Changelog': 'https://github.com/ZenulAbidin/bip39validator/blob/master/CHANGELOG.rst',
+        'Changelog': 'https://github.com/ZenulAbidin/bip39validator/blob/master/CHANGELOG.md',
         'Issue Tracker': 'https://github.com/ZenulAbidin/bip39validator/issues',
     },
     keywords=[
