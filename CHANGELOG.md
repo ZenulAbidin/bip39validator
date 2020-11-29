@@ -54,8 +54,8 @@ Pre-release version of BIP39 Validator 1.0.0. Be warned that this is alpha-quali
 - Initial unique characters test implemented
 - Maximum length test implemented
 
-[Unreleased]: https://github.com/ZenulAbidin/bip39validator/compare/v1.0.5pypi...HEAD
-[1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/v1.0.5pypi
+[Unreleased]: https://github.com/ZenulAbidin/bip39validator/compare/v1.0.5pypi4...HEAD
+[1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/v1.0.5pypi4
 [1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.4
 [1.0.3]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.3
 [1.0.2]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.2
