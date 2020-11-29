@@ -13,7 +13,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-
+from bip39validator.__version__ import __version__
 
 # -- Project information -----------------------------------------------------
 
@@ -22,7 +22,7 @@ copyright = '2020, Ali Sherief'
 author = 'Ali Sherief'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0rc1'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
