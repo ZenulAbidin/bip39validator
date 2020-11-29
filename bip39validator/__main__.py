@@ -230,7 +230,7 @@ or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line)
                 similar = e.status_obj
                 # Filter out groups with just one word in them as those are unique
                 groups = {k: v for (k, v) in similar.similargroup_all(args.init_uniq).items() if
-                              len(v) > 1}
+                              len(v) > 1 and len(k) == args.init_uniq}
                 logerror("{} groups of similar words (by {} initial characters)\n" \
                              .format(len(groups.items()), args.init_uniq))
                 for pre, group in groups.items():
