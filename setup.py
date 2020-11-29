@@ -10,7 +10,7 @@ with open(os.path.join('.', 'bip39validator', '__version__.py')) as g:
 
 setup(
     name='bip39validator',
-    version=version,
+    version=version['__version__'],
     long_description=long_description,
     long_description_content_type='text/x-rst',
     packages=find_packages(),
