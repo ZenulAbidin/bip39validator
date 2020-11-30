@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2020-11-30
+### Fixed
+- `bip39validator` crashing at startup with error `ModuleNotFoundError: No module named 'validators'`
+
 ## [1.0.5] - 2020-11-29
 ### Added
 New method `InitUniqResult.groups_length(n)`
@@ -54,8 +58,9 @@ Pre-release version of BIP39 Validator 1.0.0. Be warned that this is alpha-quali
 - Initial unique characters test implemented
 - Maximum length test implemented
 
-[Unreleased]: https://github.com/ZenulAbidin/bip39validator/compare/v1.0.5pypi4...HEAD
-[1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/v1.0.5pypi4
+[Unreleased]: https://github.com/ZenulAbidin/bip39validator/compare/v1.0.6...HEAD
+[1.0.6]: https://github.com/ZenulAbidin/bip39validator/releases/tag/v1.0.6
+[1.0.5]: https://github.com/ZenulAbidin/bip39validator/releases/tag/v1.0.5pypi4
 [1.0.4]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.4
 [1.0.3]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.3
 [1.0.2]: https://github.com/ZenulAbidin/bip39validator/releases/tag/1.0.2
