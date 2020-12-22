@@ -132,6 +132,8 @@ to log status messages to a file. The complete list of command-line arguments is
      - turn off rich text formatting and progress bars for console output
    * - -q, --quiet
      - do not display details of test failures, only whether they succeeded or failed
+   * - --nosane
+     - Suppress wordlist sanity check. This might cause other tests to fail.
    * - -v, --version
      - print the version number and exit
 

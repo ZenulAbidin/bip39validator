@@ -74,11 +74,7 @@ class BIP39WordList:
             self.words = contents2list(s)
         else:
             raise ValueError('`string`, `handle` or `url` must be specified')
-        if not all([is_all_lower(w) for w in self.words]):
-            dummy = {'is_sorted': False, 'length': len(self.words),
-                     'has_invalid_chars': True, 'length_exact': len(self.words),
-                     'err_lines': []}
-            raise InvalidWordList(**dummy)
+
         self._assemble()
 
     def _assemble(self):
@@ -116,6 +112,11 @@ class BIP39WordList:
         return self._test_lowercase_2(kwargs)
 
     def _test_lowercase_1(self):
+        if not all([is_all_lower(w) for w in self.words]):
+            dummy = {'is_sorted': False, 'length': len(self.words),
+                     'has_invalid_chars': True, 'length_exact': len(self.words),
+                     'err_lines': []}
+            raise InvalidWordList(**dummy)
         return validate_sanitized_preamble(self.words)
 
     def _test_lowercase_2(self, kwargs):

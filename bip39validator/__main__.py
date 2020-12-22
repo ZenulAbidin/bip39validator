@@ -58,6 +58,27 @@ def abort(debug):
         logerror("Aborting")
         exit(1)
 
+def check_validity_warnings(validity):
+    if not validity.is_sorted:
+        logwarning('Wordlist is not sorted. It is recommended to sort the wordlist \
+before publishing it.')
+    if not validity.has_2048_words:
+        logwarning('Wordlist has {} words. Exactly 2048 words are needed to map \
+each word to an 11-bit value 1-to-1.'.format(validity.num_words))
+
+
+def handle_invalid_wordlist(args, e):
+    if args.nosane:
+        return
+
+    check_validity_warnings(e)
+    for l in e.err_lines:
+        logerror("Word \"{}\" (line{}) has a non-lowercase character\
+    or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line))
+    logerror("Valid characters test failed")
+    logerror("Cannot perform additional tests")
+    abort(args.debug)
+
 log_file = None
 args = None
 
@@ -92,6 +113,8 @@ def main():
         parser.add_argument('-q', '--quiet', dest='quiet',
                             help='do not display details of test failures, only whether they \
   succeeded or failed', action='store_true')
+        parser.add_argument('--nosane', dest='nosane', action='store_true',
+                            help='Suppress wordlist sanity check. This might cause other tests to fail.')
         parser.add_argument('--debug', dest='debug', action='store_true',
                             help='turn on debugging mode (intended for developers)')
         parser.add_argument('--pycharm-debug', dest='pycharm_debug', action='store_true',
@@ -140,8 +163,11 @@ def main():
                 f = open(args.input)
                 kwargs = {'handle': f}
                 logdefault("Reading wordlist file {}".format(args.input))
-            bip39 = BIP39WordList(desc=f"{args.input}", **kwargs)
-            loginfo("{} words read".format(len(bip39)))
+            try:
+                bip39 = BIP39WordList(desc=f"{args.input}", **kwargs)
+                loginfo("{} words read".format(len(bip39)))
+            except InvalidWordList as e:
+                handle_invalid_wordlist(args, e)
             if not valid_url:
                 f.close()
         except OSError as e:
@@ -152,14 +178,6 @@ def main():
         tally = 0
         total = 4 - int(args.no_lev_dist) - int(args.no_init_uniq)\
                 - int(args.no_max_length)
-
-        def check_validity_warnings(validity):
-            if not validity.is_sorted:
-                logwarning('Wordlist is not sorted. It is recommended to sort the wordlist \
-  before publishing it.')
-            if not validity.has_2048_words:
-                logwarning('Wordlist has {} words. Exactly 2048 words are needed to map \
-  each word to an 11-bit value 1-to-1.'.format(validity.num_words))
 
         logdefault("Checking wordlist for invalid characters")
         try:
@@ -172,13 +190,9 @@ def main():
             tally += 1
             loginfo("Valid characters test succeeded")
         except InvalidWordList as e:
-            check_validity_warnings(e)
-            for l in e.err_lines:
-                logerror("Word \"{}\" (line{}) has a non-lowercase character\
-or is blank (Did you remove whitespace and empty lines?)".format(l.word, l.line))
-            logerror("Valid characters test failed")
-            logerror("Cannot perform additional test_vectors")
-            abort(args.debug)
+            handle_invalid_wordlist(args, e)
+            if args.nosane:
+                logwarning("Valid characters test failed, but --nosane passed; ignoring error")
 
         logdefault("Finished checking wordlist for invalid characters")
         separator()
