@@ -17,7 +17,7 @@ BIP39 Validator
    :target: https://bitcointalk.org/index.php?topic=5293662.0
    :alt: Bitcointalk thread
 
-.. image:: https://files.notatether.com/bip39validator_3.gif
+.. image:: https://i.imgur.com/W1lOGIt.gif
   :width: 600
   :alt: bip39validator sample run
 
